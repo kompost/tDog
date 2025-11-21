@@ -24,14 +24,18 @@ jobs:
       - name: Save Docker image to tar
         run: docker save tdog:latest | gzip > tdog.tar.gz
 
-      - name: Copy Docker image to Hetzner server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.HETZNER_HOST }}
-          username: ${{ secrets.HETZNER_USERNAME }}
-          key: ${{ secrets.HETZNER_SSH_KEY }}
-          source: "tdog.tar.gz,docker-compose.yml"
-          target: "/root/tdog"
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HETZNER_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.HETZNER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Create directory and copy files to Hetzner server
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ secrets.HETZNER_USERNAME }}@${{ secrets.HETZNER_HOST }} "mkdir -p /root/tdog"
+          scp -i ~/.ssh/deploy_key tdog.tar.gz ${{ secrets.HETZNER_USERNAME }}@${{ secrets.HETZNER_HOST }}:/root/tdog/
+          scp -i ~/.ssh/deploy_key docker-compose.yml ${{ secrets.HETZNER_USERNAME }}@${{ secrets.HETZNER_HOST }}:/root/tdog/
 
       - name: Deploy on Hetzner server
         uses: appleboy/ssh-action@v1.2.0
@@ -41,8 +45,15 @@ jobs:
           key: ${{ secrets.HETZNER_SSH_KEY }}
           script: |
             cd /root/tdog
-            docker load < tdog.tar.gz
-            docker compose down
-            docker compose up -d
-            docker image prune -f
-            rm tdog.tar.gz
+            ls -la
+            if [ -f tdog.tar.gz ]; then
+              docker load < tdog.tar.gz
+              docker compose down
+              docker compose up -d
+              docker image prune -f
+              rm tdog.tar.gz
+            else
+              echo "Error: tdog.tar.gz not found"
+              find /root/tdog -type f
+              exit 1
+            fi
