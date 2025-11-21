@@ -4,6 +4,15 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - '.vscode/**'
+      - '.cursorrules'
+      - 'biome.json'
+      - '.gitignore'
+      - 'DEPLOYMENT.md'
+      - 'CLAUDE.md'
+      - 'README.md'
 
 jobs:
   deploy:
