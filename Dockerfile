@@ -16,8 +16,9 @@ RUN pnpm install --frozen-lockfile
 # Copy source code
 COPY . .
 
-# Generate Prisma client
-RUN pnpm db:generate
+# Generate Prisma client (doesn't need real DATABASE_URL, just the schema)
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+RUN npx prisma generate
 
 # Build the application
 RUN pnpm build
@@ -40,9 +41,10 @@ RUN pnpm install --prod --frozen-lockfile
 # Copy built application from builder
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/src/generated ./src/generated
 
-# Generate Prisma client in production
-RUN pnpm db:generate
+# Prisma client is already generated and copied from builder
+# No need to regenerate in production stage
 
 # Expose the port the app runs on
 EXPOSE 3000
