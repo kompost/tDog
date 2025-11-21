@@ -1,0 +1,55 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub (optional - if you want to push to registry)
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        continue-on-error: true
+
+      - name: Build Docker image
+        run: |
+          docker build -t tdog:${{ github.sha }} .
+          docker tag tdog:${{ github.sha }} tdog:latest
+
+      - name: Save Docker image to tar
+        run: docker save tdog:latest | gzip > tdog.tar.gz
+
+      - name: Copy Docker image to Hetzner server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USERNAME }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          source: "tdog.tar.gz,docker-compose.yml"
+          target: "/home/${{ secrets.HETZNER_USERNAME }}/tdog"
+
+      - name: Deploy on Hetzner server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USERNAME }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.HETZNER_USERNAME }}/tdog
+            docker load < tdog.tar.gz
+            docker compose down
+            docker compose up -d
+            docker image prune -f
+            rm tdog.tar.gz
