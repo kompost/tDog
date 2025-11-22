@@ -1,5 +1,5 @@
 # Build stage
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -24,7 +24,7 @@ RUN npx prisma generate
 RUN pnpm build
 
 # Production stage
-FROM node:20-alpine
+FROM node:24-alpine
 
 # Install pnpm
 RUN npm install -g pnpm
