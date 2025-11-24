@@ -1,8 +1,8 @@
+import { PrismaPg } from "@prisma/adapter-pg"
 import { PrismaClient } from "./generated/prisma/client.js"
 
-import { PrismaPg } from "@prisma/adapter-pg"
-
 const adapter = new PrismaPg({
+    // biome-ignore lint/style/noNonNullAssertion: This variable is guaranteed to be set in production
     connectionString: process.env.DATABASE_URL!,
 })
 
