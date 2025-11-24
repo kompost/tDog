@@ -7,16 +7,15 @@
  *
  * 🟢 You can import this file directly.
  */
-import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.ts"
-import type * as Prisma from "../internal/prismaNamespace.ts"
+import type * as runtime from '@prisma/client/runtime/client'
+import type * as $Enums from '../enums.ts'
+import type * as Prisma from '../internal/prismaNamespace.ts'
 
 /**
  * Model Todo
  *
  */
-export type TodoModel =
-    runtime.Types.Result.DefaultSelection<Prisma.$TodoPayload>
+export type TodoModel = runtime.Types.Result.DefaultSelection<Prisma.$TodoPayload>
 
 export type AggregateTodo = {
     _count: TodoCountAggregateOutputType | null
@@ -81,8 +80,7 @@ export type TodoCountAggregateInputType = {
 }
 
 export type TodoAggregateArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Filter which Todo to aggregate.
@@ -93,9 +91,7 @@ export type TodoAggregateArgs<
      *
      * Determine the order of Todos to fetch.
      */
-    orderBy?:
-        | Prisma.TodoOrderByWithRelationInput
-        | Prisma.TodoOrderByWithRelationInput[]
+    orderBy?: Prisma.TodoOrderByWithRelationInput | Prisma.TodoOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      *
@@ -147,7 +143,7 @@ export type TodoAggregateArgs<
 }
 
 export type GetTodoAggregateType<T extends TodoAggregateArgs> = {
-    [P in keyof T & keyof AggregateTodo]: P extends "_count" | "count"
+    [P in keyof T & keyof AggregateTodo]: P extends '_count' | 'count'
         ? T[P] extends true
             ? number
             : Prisma.GetScalarType<T[P], AggregateTodo[P]>
@@ -155,13 +151,10 @@ export type GetTodoAggregateType<T extends TodoAggregateArgs> = {
 }
 
 export type TodoGroupByArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     where?: Prisma.TodoWhereInput
-    orderBy?:
-        | Prisma.TodoOrderByWithAggregationInput
-        | Prisma.TodoOrderByWithAggregationInput[]
+    orderBy?: Prisma.TodoOrderByWithAggregationInput | Prisma.TodoOrderByWithAggregationInput[]
     by: Prisma.TodoScalarFieldEnum[] | Prisma.TodoScalarFieldEnum
     having?: Prisma.TodoScalarWhereWithAggregatesInput
     take?: number
@@ -186,8 +179,8 @@ export type TodoGroupByOutputType = {
 
 type GetTodoGroupByPayload<T extends TodoGroupByArgs> = Prisma.PrismaPromise<
     Array<
-        Prisma.PickEnumerable<TodoGroupByOutputType, T["by"]> & {
-            [P in keyof T & keyof TodoGroupByOutputType]: P extends "_count"
+        Prisma.PickEnumerable<TodoGroupByOutputType, T['by']> & {
+            [P in keyof T & keyof TodoGroupByOutputType]: P extends '_count'
                 ? T[P] extends boolean
                     ? number
                     : Prisma.GetScalarType<T[P], TodoGroupByOutputType[P]>
@@ -200,9 +193,9 @@ export type TodoWhereInput = {
     AND?: Prisma.TodoWhereInput | Prisma.TodoWhereInput[]
     OR?: Prisma.TodoWhereInput[]
     NOT?: Prisma.TodoWhereInput | Prisma.TodoWhereInput[]
-    id?: Prisma.IntFilter<"Todo"> | number
-    title?: Prisma.StringFilter<"Todo"> | string
-    createdAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
+    id?: Prisma.IntFilter<'Todo'> | number
+    title?: Prisma.StringFilter<'Todo'> | string
+    createdAt?: Prisma.DateTimeFilter<'Todo'> | Date | string
 }
 
 export type TodoOrderByWithRelationInput = {
@@ -217,10 +210,10 @@ export type TodoWhereUniqueInput = Prisma.AtLeast<
         AND?: Prisma.TodoWhereInput | Prisma.TodoWhereInput[]
         OR?: Prisma.TodoWhereInput[]
         NOT?: Prisma.TodoWhereInput | Prisma.TodoWhereInput[]
-        title?: Prisma.StringFilter<"Todo"> | string
-        createdAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
+        title?: Prisma.StringFilter<'Todo'> | string
+        createdAt?: Prisma.DateTimeFilter<'Todo'> | Date | string
     },
-    "id"
+    'id'
 >
 
 export type TodoOrderByWithAggregationInput = {
@@ -235,16 +228,12 @@ export type TodoOrderByWithAggregationInput = {
 }
 
 export type TodoScalarWhereWithAggregatesInput = {
-    AND?:
-        | Prisma.TodoScalarWhereWithAggregatesInput
-        | Prisma.TodoScalarWhereWithAggregatesInput[]
+    AND?: Prisma.TodoScalarWhereWithAggregatesInput | Prisma.TodoScalarWhereWithAggregatesInput[]
     OR?: Prisma.TodoScalarWhereWithAggregatesInput[]
-    NOT?:
-        | Prisma.TodoScalarWhereWithAggregatesInput
-        | Prisma.TodoScalarWhereWithAggregatesInput[]
-    id?: Prisma.IntWithAggregatesFilter<"Todo"> | number
-    title?: Prisma.StringWithAggregatesFilter<"Todo"> | string
-    createdAt?: Prisma.DateTimeWithAggregatesFilter<"Todo"> | Date | string
+    NOT?: Prisma.TodoScalarWhereWithAggregatesInput | Prisma.TodoScalarWhereWithAggregatesInput[]
+    id?: Prisma.IntWithAggregatesFilter<'Todo'> | number
+    title?: Prisma.StringWithAggregatesFilter<'Todo'> | string
+    createdAt?: Prisma.DateTimeWithAggregatesFilter<'Todo'> | Date | string
 }
 
 export type TodoCreateInput = {
@@ -328,40 +317,36 @@ export type IntFieldUpdateOperationsInput = {
     divide?: number
 }
 
-export type TodoSelect<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
-> = runtime.Types.Extensions.GetSelect<
-    {
-        id?: boolean
-        title?: boolean
-        createdAt?: boolean
-    },
-    ExtArgs["result"]["todo"]
->
+export type TodoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+    runtime.Types.Extensions.GetSelect<
+        {
+            id?: boolean
+            title?: boolean
+            createdAt?: boolean
+        },
+        ExtArgs['result']['todo']
+    >
 
 export type TodoSelectCreateManyAndReturn<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetSelect<
     {
         id?: boolean
         title?: boolean
         createdAt?: boolean
     },
-    ExtArgs["result"]["todo"]
+    ExtArgs['result']['todo']
 >
 
 export type TodoSelectUpdateManyAndReturn<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetSelect<
     {
         id?: boolean
         title?: boolean
         createdAt?: boolean
     },
-    ExtArgs["result"]["todo"]
+    ExtArgs['result']['todo']
 >
 
 export type TodoSelectScalar = {
@@ -370,50 +355,42 @@ export type TodoSelectScalar = {
     createdAt?: boolean
 }
 
-export type TodoOmit<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
-> = runtime.Types.Extensions.GetOmit<
-    "id" | "title" | "createdAt",
-    ExtArgs["result"]["todo"]
+export type TodoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+    runtime.Types.Extensions.GetOmit<'id' | 'title' | 'createdAt', ExtArgs['result']['todo']>
+
+export type $TodoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+    {
+        name: 'Todo'
+        objects: {}
+        scalars: runtime.Types.Extensions.GetPayloadResult<
+            {
+                id: number
+                title: string
+                createdAt: Date
+            },
+            ExtArgs['result']['todo']
+        >
+        composites: {}
+    }
+
+export type TodoGetPayload<S extends boolean | null | undefined | TodoDefaultArgs> = runtime.Types.Result.GetResult<
+    Prisma.$TodoPayload,
+    S
 >
 
-export type $TodoPayload<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
-> = {
-    name: "Todo"
-    objects: {}
-    scalars: runtime.Types.Extensions.GetPayloadResult<
-        {
-            id: number
-            title: string
-            createdAt: Date
-        },
-        ExtArgs["result"]["todo"]
-    >
-    composites: {}
-}
-
-export type TodoGetPayload<
-    S extends boolean | null | undefined | TodoDefaultArgs,
-> = runtime.Types.Result.GetResult<Prisma.$TodoPayload, S>
-
 export type TodoCountArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
-> = Omit<TodoFindManyArgs, "select" | "include" | "distinct" | "omit"> & {
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = Omit<TodoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: TodoCountAggregateInputType | true
 }
 
 export interface TodoDelegate<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
     GlobalOmitOptions = {},
 > {
     [K: symbol]: {
-        types: Prisma.TypeMap<ExtArgs>["model"]["Todo"]
-        meta: { name: "Todo" }
+        types: Prisma.TypeMap<ExtArgs>['model']['Todo']
+        meta: { name: 'Todo' }
     }
     /**
      * Find zero or one Todo that matches the filter.
@@ -429,12 +406,7 @@ export interface TodoDelegate<
     findUnique<T extends TodoFindUniqueArgs>(
         args: Prisma.SelectSubset<T, TodoFindUniqueArgs<ExtArgs>>,
     ): Prisma.Prisma__TodoClient<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "findUnique",
-            GlobalOmitOptions
-        > | null,
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'findUnique', GlobalOmitOptions> | null,
         null,
         ExtArgs,
         GlobalOmitOptions
@@ -455,12 +427,7 @@ export interface TodoDelegate<
     findUniqueOrThrow<T extends TodoFindUniqueOrThrowArgs>(
         args: Prisma.SelectSubset<T, TodoFindUniqueOrThrowArgs<ExtArgs>>,
     ): Prisma.Prisma__TodoClient<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "findUniqueOrThrow",
-            GlobalOmitOptions
-        >,
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'findUniqueOrThrow', GlobalOmitOptions>,
         never,
         ExtArgs,
         GlobalOmitOptions
@@ -482,12 +449,7 @@ export interface TodoDelegate<
     findFirst<T extends TodoFindFirstArgs>(
         args?: Prisma.SelectSubset<T, TodoFindFirstArgs<ExtArgs>>,
     ): Prisma.Prisma__TodoClient<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "findFirst",
-            GlobalOmitOptions
-        > | null,
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'findFirst', GlobalOmitOptions> | null,
         null,
         ExtArgs,
         GlobalOmitOptions
@@ -510,12 +472,7 @@ export interface TodoDelegate<
     findFirstOrThrow<T extends TodoFindFirstOrThrowArgs>(
         args?: Prisma.SelectSubset<T, TodoFindFirstOrThrowArgs<ExtArgs>>,
     ): Prisma.Prisma__TodoClient<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "findFirstOrThrow",
-            GlobalOmitOptions
-        >,
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'findFirstOrThrow', GlobalOmitOptions>,
         never,
         ExtArgs,
         GlobalOmitOptions
@@ -540,12 +497,7 @@ export interface TodoDelegate<
     findMany<T extends TodoFindManyArgs>(
         args?: Prisma.SelectSubset<T, TodoFindManyArgs<ExtArgs>>,
     ): Prisma.PrismaPromise<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "findMany",
-            GlobalOmitOptions
-        >
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'findMany', GlobalOmitOptions>
     >
 
     /**
@@ -563,12 +515,7 @@ export interface TodoDelegate<
     create<T extends TodoCreateArgs>(
         args: Prisma.SelectSubset<T, TodoCreateArgs<ExtArgs>>,
     ): Prisma.Prisma__TodoClient<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "create",
-            GlobalOmitOptions
-        >,
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'create', GlobalOmitOptions>,
         never,
         ExtArgs,
         GlobalOmitOptions
@@ -615,12 +562,7 @@ export interface TodoDelegate<
     createManyAndReturn<T extends TodoCreateManyAndReturnArgs>(
         args?: Prisma.SelectSubset<T, TodoCreateManyAndReturnArgs<ExtArgs>>,
     ): Prisma.PrismaPromise<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "createManyAndReturn",
-            GlobalOmitOptions
-        >
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'createManyAndReturn', GlobalOmitOptions>
     >
 
     /**
@@ -638,12 +580,7 @@ export interface TodoDelegate<
     delete<T extends TodoDeleteArgs>(
         args: Prisma.SelectSubset<T, TodoDeleteArgs<ExtArgs>>,
     ): Prisma.Prisma__TodoClient<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "delete",
-            GlobalOmitOptions
-        >,
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'delete', GlobalOmitOptions>,
         never,
         ExtArgs,
         GlobalOmitOptions
@@ -667,12 +604,7 @@ export interface TodoDelegate<
     update<T extends TodoUpdateArgs>(
         args: Prisma.SelectSubset<T, TodoUpdateArgs<ExtArgs>>,
     ): Prisma.Prisma__TodoClient<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "update",
-            GlobalOmitOptions
-        >,
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'update', GlobalOmitOptions>,
         never,
         ExtArgs,
         GlobalOmitOptions
@@ -746,12 +678,7 @@ export interface TodoDelegate<
     updateManyAndReturn<T extends TodoUpdateManyAndReturnArgs>(
         args: Prisma.SelectSubset<T, TodoUpdateManyAndReturnArgs<ExtArgs>>,
     ): Prisma.PrismaPromise<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "updateManyAndReturn",
-            GlobalOmitOptions
-        >
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'updateManyAndReturn', GlobalOmitOptions>
     >
 
     /**
@@ -774,12 +701,7 @@ export interface TodoDelegate<
     upsert<T extends TodoUpsertArgs>(
         args: Prisma.SelectSubset<T, TodoUpsertArgs<ExtArgs>>,
     ): Prisma.Prisma__TodoClient<
-        runtime.Types.Result.GetResult<
-            Prisma.$TodoPayload<ExtArgs>,
-            T,
-            "upsert",
-            GlobalOmitOptions
-        >,
+        runtime.Types.Result.GetResult<Prisma.$TodoPayload<ExtArgs>, T, 'upsert', GlobalOmitOptions>,
         never,
         ExtArgs,
         GlobalOmitOptions
@@ -801,13 +723,10 @@ export interface TodoDelegate<
     count<T extends TodoCountArgs>(
         args?: Prisma.Subset<T, TodoCountArgs>,
     ): Prisma.PrismaPromise<
-        T extends runtime.Types.Utils.Record<"select", any>
-            ? T["select"] extends true
+        T extends runtime.Types.Utils.Record<'select', any>
+            ? T['select'] extends true
                 ? number
-                : Prisma.GetScalarType<
-                      T["select"],
-                      TodoCountAggregateOutputType
-                  >
+                : Prisma.GetScalarType<T['select'], TodoCountAggregateOutputType>
             : number
     >
 
@@ -860,20 +779,18 @@ export interface TodoDelegate<
     groupBy<
         T extends TodoGroupByArgs,
         HasSelectOrTake extends Prisma.Or<
-            Prisma.Extends<"skip", Prisma.Keys<T>>,
-            Prisma.Extends<"take", Prisma.Keys<T>>
+            Prisma.Extends<'skip', Prisma.Keys<T>>,
+            Prisma.Extends<'take', Prisma.Keys<T>>
         >,
         OrderByArg extends Prisma.True extends HasSelectOrTake
-            ? { orderBy: TodoGroupByArgs["orderBy"] }
-            : { orderBy?: TodoGroupByArgs["orderBy"] },
-        OrderFields extends Prisma.ExcludeUnderscoreKeys<
-            Prisma.Keys<Prisma.MaybeTupleToUnion<T["orderBy"]>>
-        >,
-        ByFields extends Prisma.MaybeTupleToUnion<T["by"]>,
+            ? { orderBy: TodoGroupByArgs['orderBy'] }
+            : { orderBy?: TodoGroupByArgs['orderBy'] },
+        OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>,
+        ByFields extends Prisma.MaybeTupleToUnion<T['by']>,
         ByValid extends Prisma.Has<ByFields, OrderFields>,
-        HavingFields extends Prisma.GetHavingFields<T["having"]>,
+        HavingFields extends Prisma.GetHavingFields<T['having']>,
         HavingValid extends Prisma.Has<ByFields, HavingFields>,
-        ByEmpty extends T["by"] extends never[] ? Prisma.True : Prisma.False,
+        ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False,
         InputErrors extends ByEmpty extends Prisma.True
             ? `Error: "by" must not be empty.`
             : HavingValid extends Prisma.False
@@ -882,15 +799,10 @@ export interface TodoDelegate<
                         ? never
                         : P extends string
                           ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-                          : [
-                                Error,
-                                "Field ",
-                                P,
-                                ` in "having" needs to be provided in "by"`,
-                            ]
+                          : [Error, 'Field ', P, ` in "having" needs to be provided in "by"`]
                 }[HavingFields]
-              : "take" extends Prisma.Keys<T>
-                ? "orderBy" extends Prisma.Keys<T>
+              : 'take' extends Prisma.Keys<T>
+                ? 'orderBy' extends Prisma.Keys<T>
                     ? ByValid extends Prisma.True
                         ? {}
                         : {
@@ -899,8 +811,8 @@ export interface TodoDelegate<
                                   : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
                           }[OrderFields]
                     : 'Error: If you provide "take", you also need to provide "orderBy"'
-                : "skip" extends Prisma.Keys<T>
-                  ? "orderBy" extends Prisma.Keys<T>
+                : 'skip' extends Prisma.Keys<T>
+                  ? 'orderBy' extends Prisma.Keys<T>
                       ? ByValid extends Prisma.True
                           ? {}
                           : {
@@ -917,11 +829,8 @@ export interface TodoDelegate<
                               : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
                       }[OrderFields],
     >(
-        args: Prisma.SubsetIntersection<T, TodoGroupByArgs, OrderByArg> &
-            InputErrors,
-    ): {} extends InputErrors
-        ? GetTodoGroupByPayload<T>
-        : Prisma.PrismaPromise<InputErrors>
+        args: Prisma.SubsetIntersection<T, TodoGroupByArgs, OrderByArg> & InputErrors,
+    ): {} extends InputErrors ? GetTodoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
     /**
      * Fields of the Todo model
      */
@@ -937,11 +846,10 @@ export interface TodoDelegate<
 export interface Prisma__TodoClient<
     T,
     Null = never,
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
     GlobalOmitOptions = {},
 > extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
+    readonly [Symbol.toStringTag]: 'PrismaPromise'
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -949,14 +857,8 @@ export interface Prisma__TodoClient<
      * @returns A Promise for the completion of which ever callback is executed.
      */
     then<TResult1 = T, TResult2 = never>(
-        onfulfilled?:
-            | ((value: T) => TResult1 | PromiseLike<TResult1>)
-            | undefined
-            | null,
-        onrejected?:
-            | ((reason: any) => TResult2 | PromiseLike<TResult2>)
-            | undefined
-            | null,
+        onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+        onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null,
     ): runtime.Types.Utils.JsPromise<TResult1 | TResult2>
     /**
      * Attaches a callback for only the rejection of the Promise.
@@ -964,10 +866,7 @@ export interface Prisma__TodoClient<
      * @returns A Promise for the completion of the callback.
      */
     catch<TResult = never>(
-        onrejected?:
-            | ((reason: any) => TResult | PromiseLike<TResult>)
-            | undefined
-            | null,
+        onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null,
     ): runtime.Types.Utils.JsPromise<T | TResult>
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
@@ -975,18 +874,16 @@ export interface Prisma__TodoClient<
      * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
      * @returns A Promise for the completion of the callback.
      */
-    finally(
-        onfinally?: (() => void) | undefined | null,
-    ): runtime.Types.Utils.JsPromise<T>
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>
 }
 
 /**
  * Fields of the Todo model
  */
 export interface TodoFieldRefs {
-    readonly id: Prisma.FieldRef<"Todo", "Int">
-    readonly title: Prisma.FieldRef<"Todo", "String">
-    readonly createdAt: Prisma.FieldRef<"Todo", "DateTime">
+    readonly id: Prisma.FieldRef<'Todo', 'Int'>
+    readonly title: Prisma.FieldRef<'Todo', 'String'>
+    readonly createdAt: Prisma.FieldRef<'Todo', 'DateTime'>
 }
 
 // Custom InputTypes
@@ -994,8 +891,7 @@ export interface TodoFieldRefs {
  * Todo findUnique
  */
 export type TodoFindUniqueArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1015,8 +911,7 @@ export type TodoFindUniqueArgs<
  * Todo findUniqueOrThrow
  */
 export type TodoFindUniqueOrThrowArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1036,8 +931,7 @@ export type TodoFindUniqueOrThrowArgs<
  * Todo findFirst
  */
 export type TodoFindFirstArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1056,9 +950,7 @@ export type TodoFindFirstArgs<
      *
      * Determine the order of Todos to fetch.
      */
-    orderBy?:
-        | Prisma.TodoOrderByWithRelationInput
-        | Prisma.TodoOrderByWithRelationInput[]
+    orderBy?: Prisma.TodoOrderByWithRelationInput | Prisma.TodoOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      *
@@ -1089,8 +981,7 @@ export type TodoFindFirstArgs<
  * Todo findFirstOrThrow
  */
 export type TodoFindFirstOrThrowArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1109,9 +1000,7 @@ export type TodoFindFirstOrThrowArgs<
      *
      * Determine the order of Todos to fetch.
      */
-    orderBy?:
-        | Prisma.TodoOrderByWithRelationInput
-        | Prisma.TodoOrderByWithRelationInput[]
+    orderBy?: Prisma.TodoOrderByWithRelationInput | Prisma.TodoOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      *
@@ -1142,8 +1031,7 @@ export type TodoFindFirstOrThrowArgs<
  * Todo findMany
  */
 export type TodoFindManyArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1162,9 +1050,7 @@ export type TodoFindManyArgs<
      *
      * Determine the order of Todos to fetch.
      */
-    orderBy?:
-        | Prisma.TodoOrderByWithRelationInput
-        | Prisma.TodoOrderByWithRelationInput[]
+    orderBy?: Prisma.TodoOrderByWithRelationInput | Prisma.TodoOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      *
@@ -1190,8 +1076,7 @@ export type TodoFindManyArgs<
  * Todo create
  */
 export type TodoCreateArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1211,8 +1096,7 @@ export type TodoCreateArgs<
  * Todo createMany
  */
 export type TodoCreateManyArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * The data used to create many Todos.
@@ -1225,8 +1109,7 @@ export type TodoCreateManyArgs<
  * Todo createManyAndReturn
  */
 export type TodoCreateManyAndReturnArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1247,8 +1130,7 @@ export type TodoCreateManyAndReturnArgs<
  * Todo update
  */
 export type TodoUpdateArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1272,16 +1154,12 @@ export type TodoUpdateArgs<
  * Todo updateMany
  */
 export type TodoUpdateManyArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * The data used to update Todos.
      */
-    data: Prisma.XOR<
-        Prisma.TodoUpdateManyMutationInput,
-        Prisma.TodoUncheckedUpdateManyInput
-    >
+    data: Prisma.XOR<Prisma.TodoUpdateManyMutationInput, Prisma.TodoUncheckedUpdateManyInput>
     /**
      * Filter which Todos to update
      */
@@ -1296,8 +1174,7 @@ export type TodoUpdateManyArgs<
  * Todo updateManyAndReturn
  */
 export type TodoUpdateManyAndReturnArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1310,10 +1187,7 @@ export type TodoUpdateManyAndReturnArgs<
     /**
      * The data used to update Todos.
      */
-    data: Prisma.XOR<
-        Prisma.TodoUpdateManyMutationInput,
-        Prisma.TodoUncheckedUpdateManyInput
-    >
+    data: Prisma.XOR<Prisma.TodoUpdateManyMutationInput, Prisma.TodoUncheckedUpdateManyInput>
     /**
      * Filter which Todos to update
      */
@@ -1328,8 +1202,7 @@ export type TodoUpdateManyAndReturnArgs<
  * Todo upsert
  */
 export type TodoUpsertArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1357,8 +1230,7 @@ export type TodoUpsertArgs<
  * Todo delete
  */
 export type TodoDeleteArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo
@@ -1378,8 +1250,7 @@ export type TodoDeleteArgs<
  * Todo deleteMany
  */
 export type TodoDeleteManyArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Filter which Todos to delete
@@ -1395,8 +1266,7 @@ export type TodoDeleteManyArgs<
  * Todo without action
  */
 export type TodoDefaultArgs<
-    ExtArgs extends
-        runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
     /**
      * Select specific fields to fetch from the Todo

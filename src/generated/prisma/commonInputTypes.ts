@@ -8,9 +8,9 @@
  * 🟢 You can import this file directly.
  */
 
-import type * as runtime from "@prisma/client/runtime/client"
-import * as $Enums from "./enums.ts"
-import type * as Prisma from "./internal/prismaNamespace.ts"
+import type * as runtime from '@prisma/client/runtime/client'
+import * as $Enums from './enums.ts'
+import type * as Prisma from './internal/prismaNamespace.ts'
 
 export type IntFilter<$PrismaModel = never> = {
     equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
@@ -91,10 +91,7 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     lte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
-    not?:
-        | Prisma.NestedDateTimeWithAggregatesFilter<$PrismaModel>
-        | Date
-        | string
+    not?: Prisma.NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
     _count?: Prisma.NestedIntFilter<$PrismaModel>
     _min?: Prisma.NestedDateTimeFilter<$PrismaModel>
     _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
@@ -188,10 +185,7 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     lte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
-    not?:
-        | Prisma.NestedDateTimeWithAggregatesFilter<$PrismaModel>
-        | Date
-        | string
+    not?: Prisma.NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
     _count?: Prisma.NestedIntFilter<$PrismaModel>
     _min?: Prisma.NestedDateTimeFilter<$PrismaModel>
     _max?: Prisma.NestedDateTimeFilter<$PrismaModel>

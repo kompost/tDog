@@ -14,23 +14,17 @@
  * model files in the `model` directory!
  */
 
-import * as runtime from "@prisma/client/runtime/index-browser"
+import * as runtime from '@prisma/client/runtime/index-browser'
 
-export type * from "../models.ts"
-export type * from "./prismaNamespace.ts"
+export type * from '../models.ts'
+export type * from './prismaNamespace.ts'
 
 export const Decimal = runtime.Decimal
 
 export const NullTypes = {
-    DbNull: runtime.NullTypes.DbNull as new (
-        secret: never,
-    ) => typeof runtime.DbNull,
-    JsonNull: runtime.NullTypes.JsonNull as new (
-        secret: never,
-    ) => typeof runtime.JsonNull,
-    AnyNull: runtime.NullTypes.AnyNull as new (
-        secret: never,
-    ) => typeof runtime.AnyNull,
+    DbNull: runtime.NullTypes.DbNull as new (secret: never) => typeof runtime.DbNull,
+    JsonNull: runtime.NullTypes.JsonNull as new (secret: never) => typeof runtime.JsonNull,
+    AnyNull: runtime.NullTypes.AnyNull as new (secret: never) => typeof runtime.AnyNull,
 }
 /**
  * Helper for filtering JSON entries that have `null` on the database (empty on the db)
@@ -54,7 +48,7 @@ export const JsonNull = runtime.JsonNull
 export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
-    Todo: "Todo",
+    Todo: 'Todo',
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -64,34 +58,32 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  */
 
 export const TransactionIsolationLevel = {
-    ReadUncommitted: "ReadUncommitted",
-    ReadCommitted: "ReadCommitted",
-    RepeatableRead: "RepeatableRead",
-    Serializable: "Serializable",
+    ReadUncommitted: 'ReadUncommitted',
+    ReadCommitted: 'ReadCommitted',
+    RepeatableRead: 'RepeatableRead',
+    Serializable: 'Serializable',
 } as const
 
-export type TransactionIsolationLevel =
-    (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 export const TodoScalarFieldEnum = {
-    id: "id",
-    title: "title",
-    createdAt: "createdAt",
+    id: 'id',
+    title: 'title',
+    createdAt: 'createdAt',
 } as const
 
-export type TodoScalarFieldEnum =
-    (typeof TodoScalarFieldEnum)[keyof typeof TodoScalarFieldEnum]
+export type TodoScalarFieldEnum = (typeof TodoScalarFieldEnum)[keyof typeof TodoScalarFieldEnum]
 
 export const SortOrder = {
-    asc: "asc",
-    desc: "desc",
+    asc: 'asc',
+    desc: 'desc',
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 export const QueryMode = {
-    default: "default",
-    insensitive: "insensitive",
+    default: 'default',
+    insensitive: 'insensitive',
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]

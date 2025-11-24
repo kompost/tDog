@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { Construction, Hammer, Wrench } from "lucide-react"
+import { createFileRoute } from '@tanstack/react-router'
+import { Construction, Hammer, Wrench } from 'lucide-react'
 
-export const Route = createFileRoute("/")({ component: App })
+export const Route = createFileRoute('/')({ component: App })
 
 function App() {
     return (
@@ -22,13 +22,10 @@ function App() {
                     </span>
                 </h1>
 
-                <p className="text-xl md:text-2xl text-gray-300 mb-4 font-light">
-                    We're building something awesome
-                </p>
+                <p className="text-xl md:text-2xl text-gray-300 mb-4 font-light">We're building something awesome</p>
 
                 <p className="text-lg text-gray-400 max-w-xl mx-auto mb-8">
-                    Our site is currently under construction. Check back soon to
-                    see what we've been working on!
+                    Our site is currently under construction. Check back soon to see what we've been working on!
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

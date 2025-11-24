@@ -12,10 +12,10 @@
  * 🟢 You can import this file directly.
  */
 
-import * as Prisma from "./internal/prismaNamespaceBrowser.ts"
+import * as Prisma from './internal/prismaNamespaceBrowser.ts'
 export { Prisma }
-export * as $Enums from "./enums.ts"
-export * from "./enums.ts"
+export * as $Enums from './enums.ts'
+export * from './enums.ts'
 /**
  * Model Todo
  *
