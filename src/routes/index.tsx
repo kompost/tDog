@@ -1,24 +1,36 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
+
+const loaderFn = createServerFn({ method: 'GET' }).handler(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 3000))
+    return { msg: 'This is loaded data!' }
+})
 
 export const Route = createFileRoute('/')({
     component: Page,
 })
 
-const loaderFn = createServerFn().handler(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 3000))
-    return { msg: 'This is loaded data!' }
-})
-
 export function Page() {
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
     return (
         <div>
-            <Suspense fallback={<SkeletonDemo />}>
-                <Data />
-            </Suspense>
+            <h1>Home Page</h1>
+            {/* Always render skeleton during SSR and until mounted */}
+            {!mounted ? (
+                <SkeletonDemo />
+            ) : (
+                <Suspense fallback={<SkeletonDemo />}>
+                    <Data />
+                </Suspense>
+            )}
         </div>
     )
 }
