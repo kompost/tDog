@@ -14,23 +14,12 @@ export const Route = createFileRoute('/')({
 })
 
 export function Page() {
-    const [mounted, setMounted] = useState(false)
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
-
     return (
         <div>
             <h1>Home Page</h1>
-            {/* Always render skeleton during SSR and until mounted */}
-            {!mounted ? (
-                <SkeletonDemo />
-            ) : (
-                <Suspense fallback={<SkeletonDemo />}>
-                    <Data />
-                </Suspense>
-            )}
+            <Suspense fallback={<SkeletonDemo />}>
+                <Data />
+            </Suspense>
         </div>
     )
 }
