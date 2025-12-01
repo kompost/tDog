@@ -37,6 +37,7 @@ export function SkeletonDemo() {
             <Skeleton className="h-12 w-12 rounded-full" />
             <div className="space-y-2">
                 <Skeleton className="w-[250px]" />
+                Loading...
                 <Skeleton className="w-[200px]" />
             </div>
         </div>
