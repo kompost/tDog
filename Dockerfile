@@ -16,6 +16,9 @@ RUN pnpm install --frozen-lockfile
 # Copy source code
 COPY . .
 
+# Set production environment for consistent builds
+ENV NODE_ENV=production
+
 # Generate Prisma client (doesn't need real DATABASE_URL, just the schema)
 ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN npx prisma generate
