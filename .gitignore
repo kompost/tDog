@@ -11,3 +11,6 @@ count.txt
 .output
 .vinxi
 todos.json
+
+# Prisma generated client (generated on demand)
+src/generated/prisma
