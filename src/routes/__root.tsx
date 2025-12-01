@@ -3,7 +3,8 @@ import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-import appCss from '../styles.css?url'
+// Import CSS directly, not as URL - let Vite handle it
+import '../styles.css'
 
 interface MyRouterContext {
     queryClient: QueryClient
@@ -23,12 +24,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
                 title: 'TanStack Start Starter',
             },
         ],
-        links: [
-            {
-                rel: 'stylesheet',
-                href: appCss,
-            },
-        ],
+        // CSS is injected automatically by Vite when imported directly
     }),
     shellComponent: RootComponent,
     notFoundComponent: () => <div>Not Found</div>,
