@@ -22,15 +22,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Clear Docker build cache
-        run: docker builder prune -af
-
-      - name: Build Docker image
+      - name: Build Docker image (no cache)
         run: |
-          docker build -t tdog:${{ github.sha }} .
+          docker build --no-cache -t tdog:${{ github.sha }} .
           docker tag tdog:${{ github.sha }} tdog:latest
 
       - name: Save Docker image to tar
