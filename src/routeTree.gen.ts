@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StreamingExampleRouteImport } from './routes/streaming-example'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as AuthenticatedIdiotsRouteImport } from './routes/_authenticated
 import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc.$'
 import { Route as ApiAuthCallbackRouteImport } from './routes/api/auth/callback'
 
+const StreamingExampleRoute = StreamingExampleRouteImport.update({
+  id: '/streaming-example',
+  path: '/streaming-example',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LogoutRoute = LogoutRouteImport.update({
   id: '/logout',
   path: '/logout',
@@ -55,6 +61,7 @@ const ApiAuthCallbackRoute = ApiAuthCallbackRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/logout': typeof LogoutRoute
+  '/streaming-example': typeof StreamingExampleRoute
   '/idiots': typeof AuthenticatedIdiotsRoute
   '/api/$': typeof ApiSplatRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
@@ -63,6 +70,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/logout': typeof LogoutRoute
+  '/streaming-example': typeof StreamingExampleRoute
   '/idiots': typeof AuthenticatedIdiotsRoute
   '/api/$': typeof ApiSplatRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
@@ -73,6 +81,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/logout': typeof LogoutRoute
+  '/streaming-example': typeof StreamingExampleRoute
   '/_authenticated/idiots': typeof AuthenticatedIdiotsRoute
   '/api/$': typeof ApiSplatRoute
   '/api/auth/callback': typeof ApiAuthCallbackRoute
@@ -83,6 +92,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/logout'
+    | '/streaming-example'
     | '/idiots'
     | '/api/$'
     | '/api/auth/callback'
@@ -91,6 +101,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/logout'
+    | '/streaming-example'
     | '/idiots'
     | '/api/$'
     | '/api/auth/callback'
@@ -100,6 +111,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/logout'
+    | '/streaming-example'
     | '/_authenticated/idiots'
     | '/api/$'
     | '/api/auth/callback'
@@ -110,6 +122,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   LogoutRoute: typeof LogoutRoute
+  StreamingExampleRoute: typeof StreamingExampleRoute
   ApiSplatRoute: typeof ApiSplatRoute
   ApiAuthCallbackRoute: typeof ApiAuthCallbackRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
@@ -117,6 +130,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/streaming-example': {
+      id: '/streaming-example'
+      path: '/streaming-example'
+      fullPath: '/streaming-example'
+      preLoaderRoute: typeof StreamingExampleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/logout': {
       id: '/logout'
       path: '/logout'
@@ -184,6 +204,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   LogoutRoute: LogoutRoute,
+  StreamingExampleRoute: StreamingExampleRoute,
   ApiSplatRoute: ApiSplatRoute,
   ApiAuthCallbackRoute: ApiAuthCallbackRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
