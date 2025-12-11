@@ -1,17 +1,10 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
-import { authClient } from '@/lib/auth-client'
+import { useId, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+import { authClient } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/sign-up')({
     component: SignUpPage,
@@ -56,9 +49,7 @@ function SignUpPage() {
             <Card className="w-full max-w-md">
                 <CardHeader>
                     <CardTitle>Create an account</CardTitle>
-                    <CardDescription>
-                        Enter your details to create your account
-                    </CardDescription>
+                    <CardDescription>Enter your details to create your account</CardDescription>
                 </CardHeader>
                 <form onSubmit={handleSignUp}>
                     <CardContent className="space-y-4">
@@ -70,7 +61,7 @@ function SignUpPage() {
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
                             <Input
-                                id="name"
+                                id={useId()}
                                 type="text"
                                 placeholder="John Doe"
                                 value={name}
@@ -81,7 +72,7 @@ function SignUpPage() {
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
-                                id="email"
+                                id={useId()}
                                 type="email"
                                 placeholder="john@example.com"
                                 value={email}
@@ -92,7 +83,7 @@ function SignUpPage() {
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
                             <Input
-                                id="password"
+                                id={useId()}
                                 type="password"
                                 placeholder="••••••••"
                                 value={password}

@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -59,7 +59,7 @@ function SignInPage() {
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
-                                id="email"
+                                id={useId()}
                                 type="email"
                                 placeholder="john@example.com"
                                 value={email}
@@ -70,7 +70,7 @@ function SignInPage() {
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
                             <Input
-                                id="password"
+                                id={useId()}
                                 type="password"
                                 placeholder="••••••••"
                                 value={password}

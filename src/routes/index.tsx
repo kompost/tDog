@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const loaderFn = createServerFn({ method: 'GET' }).handler(async () => {

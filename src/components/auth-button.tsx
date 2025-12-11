@@ -1,6 +1,6 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { authClient } from '@/lib/auth-client'
 import { Button } from '@/components/ui/button'
+import { authClient } from '@/lib/auth-client'
 
 export function AuthButton() {
     const navigate = useNavigate()
@@ -14,9 +14,7 @@ export function AuthButton() {
     if (session) {
         return (
             <div className="flex items-center gap-4">
-                <span className="text-sm text-gray-600">
-                    Hello, {session.user.name || session.user.email}
-                </span>
+                <span className="text-sm text-gray-600">Hello, {session.user.name || session.user.email}</span>
                 <Button onClick={handleSignOut} variant="outline" size="sm">
                     Sign Out
                 </Button>
