@@ -1,14 +1,23 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { getAuth, getSignInUrl } from '../../authkit/serverFunctions'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { getSession } from '@/lib/auth-server'
+
+const checkAuth = createServerFn({ method: 'GET' }).handler(async ({ request }) => {
+    const session = await getSession(request)
+    console.log('Session:', session)
+    if (!session) {
+        throw redirect({
+            to: '/sign-in',
+        })
+    }
+
+    return session
+})
 
 export const Route = createFileRoute('/_authenticated')({
-    beforeLoad: async ({ location }) => {
-        const { user } = await getAuth()
-        if (!user) {
-            const { pathname } = location
-            const href = await getSignInUrl({ data: pathname })
-            throw redirect({ href })
-        }
-        return { user }
+    beforeLoad: async () => {
+        const session = await checkAuth()
+        return { session }
     },
+    component: () => <Outlet />,
 })

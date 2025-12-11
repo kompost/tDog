@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -8,34 +9,64 @@ datasource db {
 }
 
 model User {
-  id               Int      @id @default(autoincrement())
-  email            String   @unique
-  name             String?
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
 
-  // 1-to-many
-  eventsOrganized  Event[]  @relation("EventOrganizer")
-
-  // many-to-many
-  eventsAttending  Event[]  @relation("EventAttendees")
-
-  // many-to-many declines
-  eventsDeclined   Event[]  @relation("EventDeclines")
+  @@unique([email])
+  @@map("user")
 }
 
-model Event {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  date        DateTime
-  location    String?
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // 1-to-many back reference
-  organizer   User     @relation("EventOrganizer", fields: [organizerId], references: [id])
-  organizerId Int
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
 
-  // many-to-many
-  attendees   User[]   @relation("EventAttendees")
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
-  // many-to-many declines
-  declinedBy  User[]   @relation("EventDeclines")
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
