@@ -27,7 +27,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         // CSS is injected automatically by Vite when imported directly
     }),
     shellComponent: RootComponent,
-    notFoundComponent: () => <div>Not Found</div>,
+    notFoundComponent: NotFound,
 })
 
 function RootComponent() {
@@ -44,7 +44,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <head>
                 <HeadContent />
             </head>
-            <body>
+            <body className="dark:bg-gray-900 dark:text-white min-h-screen">
                 {children}
 
                 <TanStackDevtools
@@ -62,5 +62,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 <Scripts />
             </body>
         </html>
+    )
+}
+
+function NotFound() {
+    return (
+        <div className="min-h-screen flex items-center justify-center flex-col gap-4">
+            <h1 className="text-4xl font-bold">404</h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400">Page not found</p>
+        </div>
     )
 }
