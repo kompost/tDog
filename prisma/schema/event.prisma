@@ -1,0 +1,32 @@
+model Event {
+  id          String   @id
+  name        String
+  description String
+  date        DateTime
+  location    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  creator   User   @relation("EventCreator", fields: [creatorId], references: [id])
+  creatorId String
+
+  participants EventParticipant[]
+
+  @@map("event")
+}
+
+model EventParticipant {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([userId])
+  @@index([eventId])
+  @@map("event_participant")
+}
