@@ -13,11 +13,13 @@ function RouteComponent() {
             <h1 className="text-2xl font-bold mb-4">Protected Page</h1>
             <div className="space-y-2">
                 <h2 className="text-xl font-semibold">User Info:</h2>
-                {Object.entries(session.user).map(([key, value]) => (
-                    <p key={key}>
-                        <span className="font-medium">{key}:</span> {String(value)}
-                    </p>
-                ))}
+                {Object.entries(session.user)
+                    .filter(([key]) => key !== 'createdAt' && key !== 'updatedAt')
+                    .map(([key, value]) => (
+                        <p key={key}>
+                            <span className="font-medium">{key}:</span> {String(value)}
+                        </p>
+                    ))}
             </div>
             <div className="mt-6 space-y-2">
                 <h2 className="text-xl font-semibold">Session Info:</h2>
