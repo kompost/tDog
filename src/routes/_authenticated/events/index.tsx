@@ -76,10 +76,7 @@ function EventsPage() {
                                 <div className="flex justify-between items-start">
                                     <div>
                                         <CardTitle>{event.name}</CardTitle>
-                                        <CardDescription>
-                                            {new Date(event.date).toLocaleString()}
-                                            {event.location && ` • ${event.location}`}
-                                        </CardDescription>
+                                        <CardDescription>{event.location && ` • ${event.location}`}</CardDescription>
                                     </div>
                                     <Link to="/events/edit/$eventId" params={{ eventId: event.id }}>
                                         <Button variant="outline" size="sm">

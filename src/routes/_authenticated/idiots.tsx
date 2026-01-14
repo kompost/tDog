@@ -24,10 +24,6 @@ function RouteComponent() {
                 <p>
                     <span className="font-medium">Session ID:</span> {session.session.id}
                 </p>
-                <p>
-                    <span className="font-medium">Expires At:</span>{' '}
-                    {new Date(session.session.expiresAt).toLocaleString()}
-                </p>
             </div>
         </div>
     )

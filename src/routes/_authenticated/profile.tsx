@@ -79,20 +79,12 @@ function ProfilePage() {
                         <p>
                             <span className="font-medium">Session ID:</span> {session.session.id}
                         </p>
-                        <p>
-                            <span className="font-medium">Expires At:</span>{' '}
-                            {new Date(session.session.expiresAt).toLocaleString()}
-                        </p>
                     </div>
                 </div>
 
                 <div className="bg-white border rounded-lg p-6">
                     <h2 className="text-xl font-semibold mb-4">Additional Data (from protected server function)</h2>
                     <div className="space-y-2">
-                        <p>
-                            <span className="font-medium">Last Login:</span>{' '}
-                            {new Date(data.additionalData.lastLogin).toLocaleString()}
-                        </p>
                         <p>
                             <span className="font-medium">Account Type:</span> {data.additionalData.accountType}
                         </p>
