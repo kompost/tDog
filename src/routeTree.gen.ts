@@ -17,8 +17,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiSplatRouteImport } from './routes/api/$'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedIdiotsRouteImport } from './routes/_authenticated/idiots'
+import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
 import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AuthenticatedEventsEditEventIdRouteImport } from './routes/_authenticated/events/edit.$eventId'
 
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
@@ -59,6 +61,12 @@ const AuthenticatedIdiotsRoute = AuthenticatedIdiotsRouteImport.update({
   path: '/idiots',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedEventsIndexRoute =
+  AuthenticatedEventsIndexRouteImport.update({
+    id: '/events/',
+    path: '/events/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
   path: '/api/rpc/$',
@@ -69,6 +77,12 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedEventsEditEventIdRoute =
+  AuthenticatedEventsEditEventIdRouteImport.update({
+    id: '/events/edit/$eventId',
+    path: '/events/edit/$eventId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -80,6 +94,8 @@ export interface FileRoutesByFullPath {
   '/api/$': typeof ApiSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/events': typeof AuthenticatedEventsIndexRoute
+  '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,6 +107,8 @@ export interface FileRoutesByTo {
   '/api/$': typeof ApiSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/events': typeof AuthenticatedEventsIndexRoute
+  '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,6 +122,8 @@ export interface FileRoutesById {
   '/api/$': typeof ApiSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
+  '/_authenticated/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,6 +137,8 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/events'
+    | '/events/edit/$eventId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,6 +150,8 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/events'
+    | '/events/edit/$eventId'
   id:
     | '__root__'
     | '/'
@@ -140,6 +164,8 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/_authenticated/events/'
+    | '/_authenticated/events/edit/$eventId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -211,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIdiotsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/events/': {
+      id: '/_authenticated/events/'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/rpc/$': {
       id: '/api/rpc/$'
       path: '/api/rpc/$'
@@ -225,17 +258,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/events/edit/$eventId': {
+      id: '/_authenticated/events/edit/$eventId'
+      path: '/events/edit/$eventId'
+      fullPath: '/events/edit/$eventId'
+      preLoaderRoute: typeof AuthenticatedEventsEditEventIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedIdiotsRoute: typeof AuthenticatedIdiotsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
+  AuthenticatedEventsEditEventIdRoute: typeof AuthenticatedEventsEditEventIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIdiotsRoute: AuthenticatedIdiotsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
+  AuthenticatedEventsEditEventIdRoute: AuthenticatedEventsEditEventIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
