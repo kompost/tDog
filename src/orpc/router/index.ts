@@ -1,8 +1,9 @@
 import { getRandomJoke } from './jokes'
-import { addTodo, listTodos } from './todos'
+import { addTodo, getMyProfile, listTodos } from './todos'
 
 export default {
     listTodos,
     addTodo,
     getRandomJoke,
+    getMyProfile,
 }
