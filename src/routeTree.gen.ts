@@ -94,7 +94,7 @@ export interface FileRoutesByFullPath {
   '/api/$': typeof ApiSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
-  '/events': typeof AuthenticatedEventsIndexRoute
+  '/events/': typeof AuthenticatedEventsIndexRoute
   '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
 export interface FileRoutesByTo {
@@ -137,7 +137,7 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/api/auth/$'
     | '/api/rpc/$'
-    | '/events'
+    | '/events/'
     | '/events/edit/$eventId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -205,7 +205,7 @@ declare module '@tanstack/react-router' {
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -240,7 +240,7 @@ declare module '@tanstack/react-router' {
     '/_authenticated/events/': {
       id: '/_authenticated/events/'
       path: '/events'
-      fullPath: '/events'
+      fullPath: '/events/'
       preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
