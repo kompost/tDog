@@ -15,7 +15,8 @@ import { Route as SplatRouteImport } from './routes/$'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
-import { Route as AuthenticatedIdiotsRouteImport } from './routes/_authenticated/idiots'
+import { Route as AuthenticatedIdiotsRouteRouteImport } from './routes/_authenticated/idiots/route'
+import { Route as AuthenticatedIdiotsIndexRouteImport } from './routes/_authenticated/idiots/index'
 import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthenticatedEventsEditEventIdRouteImport } from './routes/_authenticated/events/edit.$eventId'
@@ -49,11 +50,18 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedIdiotsRoute = AuthenticatedIdiotsRouteImport.update({
-  id: '/idiots',
-  path: '/idiots',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
+const AuthenticatedIdiotsRouteRoute =
+  AuthenticatedIdiotsRouteRouteImport.update({
+    id: '/idiots',
+    path: '/idiots',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedIdiotsIndexRoute =
+  AuthenticatedIdiotsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedIdiotsRouteRoute,
+  } as any)
 const AuthenticatedEventsIndexRoute =
   AuthenticatedEventsIndexRouteImport.update({
     id: '/events/',
@@ -77,10 +85,11 @@ export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/idiots': typeof AuthenticatedIdiotsRoute
+  '/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/events/': typeof AuthenticatedEventsIndexRoute
+  '/idiots/': typeof AuthenticatedIdiotsIndexRoute
   '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
 export interface FileRoutesByTo {
@@ -88,10 +97,10 @@ export interface FileRoutesByTo {
   '/$': typeof SplatRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/idiots': typeof AuthenticatedIdiotsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/events': typeof AuthenticatedEventsIndexRoute
+  '/idiots': typeof AuthenticatedIdiotsIndexRoute
   '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
 export interface FileRoutesById {
@@ -101,10 +110,11 @@ export interface FileRoutesById {
   '/$': typeof SplatRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/_authenticated/idiots': typeof AuthenticatedIdiotsRoute
+  '/_authenticated/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
+  '/_authenticated/idiots/': typeof AuthenticatedIdiotsIndexRoute
   '/_authenticated/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
 export interface FileRouteTypes {
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/api/auth/$'
     | '/events/'
+    | '/idiots/'
     | '/events/edit/$eventId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -125,10 +136,10 @@ export interface FileRouteTypes {
     | '/$'
     | '/sign-in'
     | '/sign-up'
-    | '/idiots'
     | '/profile'
     | '/api/auth/$'
     | '/events'
+    | '/idiots'
     | '/events/edit/$eventId'
   id:
     | '__root__'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/api/auth/$'
     | '/_authenticated/events/'
+    | '/_authenticated/idiots/'
     | '/_authenticated/events/edit/$eventId'
   fileRoutesById: FileRoutesById
 }
@@ -201,8 +213,15 @@ declare module '@tanstack/react-router' {
       id: '/_authenticated/idiots'
       path: '/idiots'
       fullPath: '/idiots'
-      preLoaderRoute: typeof AuthenticatedIdiotsRouteImport
+      preLoaderRoute: typeof AuthenticatedIdiotsRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/idiots/': {
+      id: '/_authenticated/idiots/'
+      path: '/'
+      fullPath: '/idiots/'
+      preLoaderRoute: typeof AuthenticatedIdiotsIndexRouteImport
+      parentRoute: typeof AuthenticatedIdiotsRouteRoute
     }
     '/_authenticated/events/': {
       id: '/_authenticated/events/'
@@ -228,15 +247,29 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedIdiotsRouteRouteChildren {
+  AuthenticatedIdiotsIndexRoute: typeof AuthenticatedIdiotsIndexRoute
+}
+
+const AuthenticatedIdiotsRouteRouteChildren: AuthenticatedIdiotsRouteRouteChildren =
+  {
+    AuthenticatedIdiotsIndexRoute: AuthenticatedIdiotsIndexRoute,
+  }
+
+const AuthenticatedIdiotsRouteRouteWithChildren =
+  AuthenticatedIdiotsRouteRoute._addFileChildren(
+    AuthenticatedIdiotsRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedIdiotsRoute: typeof AuthenticatedIdiotsRoute
+  AuthenticatedIdiotsRouteRoute: typeof AuthenticatedIdiotsRouteRouteWithChildren
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
   AuthenticatedEventsEditEventIdRoute: typeof AuthenticatedEventsEditEventIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedIdiotsRoute: AuthenticatedIdiotsRoute,
+  AuthenticatedIdiotsRouteRoute: AuthenticatedIdiotsRouteRouteWithChildren,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
   AuthenticatedEventsEditEventIdRoute: AuthenticatedEventsEditEventIdRoute,
