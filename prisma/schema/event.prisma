@@ -1,5 +1,5 @@
 model Event {
-  id          String   @id
+  id          String   @id @default(cuid())
   name        String
   description String
   date        DateTime
@@ -8,8 +8,8 @@ model Event {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  creator   User   @relation("EventCreator", fields: [creatorId], references: [id])
-  creatorId String
+  creator   User?  @relation("EventCreator", fields: [creatorId], references: [id], onDelete: SetNull)
+  creatorId String?
 
   participants EventParticipant[]
 
@@ -19,11 +19,11 @@ model Event {
 model EventParticipant {
   id        String   @id @default(cuid())
   eventId   String
-  userId    String
+  userId    String?
   createdAt DateTime @default(now())
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user  User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@unique([eventId, userId])
   @@index([userId])

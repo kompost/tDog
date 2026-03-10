@@ -14,11 +14,9 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiSplatRouteImport } from './routes/api/$'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedIdiotsRouteImport } from './routes/_authenticated/idiots'
 import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
-import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthenticatedEventsEditEventIdRouteImport } from './routes/_authenticated/events/edit.$eventId'
 
@@ -46,11 +44,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSplatRoute = ApiSplatRouteImport.update({
-  id: '/api/$',
-  path: '/api/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -67,11 +60,6 @@ const AuthenticatedEventsIndexRoute =
     path: '/events/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
-  id: '/api/rpc/$',
-  path: '/api/rpc/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -91,9 +79,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof SignUpRoute
   '/idiots': typeof AuthenticatedIdiotsRoute
   '/profile': typeof AuthenticatedProfileRoute
-  '/api/$': typeof ApiSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/rpc/$': typeof ApiRpcSplatRoute
   '/events/': typeof AuthenticatedEventsIndexRoute
   '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
@@ -104,9 +90,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof SignUpRoute
   '/idiots': typeof AuthenticatedIdiotsRoute
   '/profile': typeof AuthenticatedProfileRoute
-  '/api/$': typeof ApiSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/rpc/$': typeof ApiRpcSplatRoute
   '/events': typeof AuthenticatedEventsIndexRoute
   '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
@@ -119,9 +103,7 @@ export interface FileRoutesById {
   '/sign-up': typeof SignUpRoute
   '/_authenticated/idiots': typeof AuthenticatedIdiotsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
-  '/api/$': typeof ApiSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/rpc/$': typeof ApiRpcSplatRoute
   '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
   '/_authenticated/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
 }
@@ -134,9 +116,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/idiots'
     | '/profile'
-    | '/api/$'
     | '/api/auth/$'
-    | '/api/rpc/$'
     | '/events/'
     | '/events/edit/$eventId'
   fileRoutesByTo: FileRoutesByTo
@@ -147,9 +127,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/idiots'
     | '/profile'
-    | '/api/$'
     | '/api/auth/$'
-    | '/api/rpc/$'
     | '/events'
     | '/events/edit/$eventId'
   id:
@@ -161,9 +139,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/_authenticated/idiots'
     | '/_authenticated/profile'
-    | '/api/$'
     | '/api/auth/$'
-    | '/api/rpc/$'
     | '/_authenticated/events/'
     | '/_authenticated/events/edit/$eventId'
   fileRoutesById: FileRoutesById
@@ -174,9 +150,7 @@ export interface RootRouteChildren {
   SplatRoute: typeof SplatRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
-  ApiSplatRoute: typeof ApiSplatRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiRpcSplatRoute: typeof ApiRpcSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -216,13 +190,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/$': {
-      id: '/api/$'
-      path: '/api/$'
-      fullPath: '/api/$'
-      preLoaderRoute: typeof ApiSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -243,13 +210,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/events/'
       preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/api/rpc/$': {
-      id: '/api/rpc/$'
-      path: '/api/rpc/$'
-      fullPath: '/api/rpc/$'
-      preLoaderRoute: typeof ApiRpcSplatRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -291,9 +251,7 @@ const rootRouteChildren: RootRouteChildren = {
   SplatRoute: SplatRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
-  ApiSplatRoute: ApiSplatRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiRpcSplatRoute: ApiRpcSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

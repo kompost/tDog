@@ -1,0 +1,6 @@
+model AllowedUser {
+  id    String @id @default(cuid())
+  email String @unique
+
+  @@map("allowed_user")
+}

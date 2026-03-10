@@ -88,7 +88,7 @@ function EventsPage() {
                             <CardContent>
                                 <p className="text-gray-700 mb-4">{event.description}</p>
                                 <div className="text-sm text-gray-500">
-                                    <p>Created by: {event.creator.name}</p>
+                                    <p>Created by: {event.creator?.name ?? 'Deleted User'}</p>
                                     <p>Participants: {event.participants.length}</p>
                                 </div>
                             </CardContent>

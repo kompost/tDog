@@ -19,13 +19,7 @@
     "db:seed": "dotenv -e .env.local -- prisma db seed"
   },
   "dependencies": {
-    "@orpc/client": "^1.13.6",
-    "@orpc/json-schema": "^1.13.6",
-    "@orpc/openapi": "^1.13.6",
-    "@orpc/server": "^1.13.6",
-    "@orpc/tanstack-query": "^1.13.6",
-    "@orpc/zod": "^1.13.6",
-    "@prisma/adapter-pg": "^7.4.2",
+"@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",
