@@ -43,7 +43,7 @@ const listMyEvents = createServerFn({ method: 'GET' }).handler(async ({ request 
     return events
 })
 
-export const Route = createFileRoute('/_authenticated/events/')({
+export const Route = createFileRoute('/_authenticated/idiots/events/')({
     loader: () => listMyEvents(),
     component: EventsPage,
 })
@@ -55,7 +55,7 @@ function EventsPage() {
         <div className="p-8 max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold">My Events</h1>
-                <Link to="/events/edit/$eventId" params={{ eventId: 'new' }}>
+                <Link to="/idiots/events/edit/$eventId" params={{ eventId: 'new' }}>
                     <Button>Create Event</Button>
                 </Link>
             </div>
@@ -78,7 +78,7 @@ function EventsPage() {
                                         <CardTitle>{event.name}</CardTitle>
                                         <CardDescription>{event.location && ` • ${event.location}`}</CardDescription>
                                     </div>
-                                    <Link to="/events/edit/$eventId" params={{ eventId: event.id }}>
+                                    <Link to="/idiots/events/edit/$eventId" params={{ eventId: event.id }}>
                                         <Button variant="outline" size="sm">
                                             Edit
                                         </Button>

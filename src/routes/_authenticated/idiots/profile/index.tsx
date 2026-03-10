@@ -26,7 +26,7 @@ const getUserProfile = createServerFn({ method: 'GET' }).handler(async ({ reques
     }
 })
 
-export const Route = createFileRoute('/_authenticated/profile')({
+export const Route = createFileRoute('/_authenticated/idiots/profile/')({
     component: ProfilePage,
 })
 

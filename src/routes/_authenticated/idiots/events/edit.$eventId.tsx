@@ -118,7 +118,7 @@ const updateEvent = createServerFn({ method: 'POST' })
         return event
     })
 
-export const Route = createFileRoute('/_authenticated/events/edit/$eventId')({
+export const Route = createFileRoute('/_authenticated/idiots/events/edit/$eventId')({
     component: EditEventPage,
 })
 
@@ -174,7 +174,7 @@ function EditEventPage() {
             }
 
             router.invalidate()
-            navigate({ to: '/events' })
+            navigate({ to: '/idiots/events' })
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An error occurred')
             setIsSubmitting(false)
@@ -246,7 +246,7 @@ function EditEventPage() {
                             <Button type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? 'Saving...' : isNewEvent ? 'Create Event' : 'Update Event'}
                             </Button>
-                            <Button type="button" variant="outline" onClick={() => navigate({ to: '/events' })}>
+                            <Button type="button" variant="outline" onClick={() => navigate({ to: '/idiots/events' })}>
                                 Cancel
                             </Button>
                         </div>

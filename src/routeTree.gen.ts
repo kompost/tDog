@@ -14,12 +14,13 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedIdiotsRouteRouteImport } from './routes/_authenticated/idiots/route'
 import { Route as AuthenticatedIdiotsIndexRouteImport } from './routes/_authenticated/idiots/index'
-import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as AuthenticatedEventsEditEventIdRouteImport } from './routes/_authenticated/events/edit.$eventId'
+import { Route as AuthenticatedIdiotsProfileIndexRouteImport } from './routes/_authenticated/idiots/profile/index'
+import { Route as AuthenticatedIdiotsEventsIndexRouteImport } from './routes/_authenticated/idiots/events/index'
+import { Route as AuthenticatedIdiotsChatIndexRouteImport } from './routes/_authenticated/idiots/chat/index'
+import { Route as AuthenticatedIdiotsEventsEditEventIdRouteImport } from './routes/_authenticated/idiots/events/edit.$eventId'
 
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
@@ -45,11 +46,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedIdiotsRouteRoute =
   AuthenticatedIdiotsRouteRouteImport.update({
     id: '/idiots',
@@ -62,22 +58,34 @@ const AuthenticatedIdiotsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedIdiotsRouteRoute,
   } as any)
-const AuthenticatedEventsIndexRoute =
-  AuthenticatedEventsIndexRouteImport.update({
-    id: '/events/',
-    path: '/events/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedEventsEditEventIdRoute =
-  AuthenticatedEventsEditEventIdRouteImport.update({
+const AuthenticatedIdiotsProfileIndexRoute =
+  AuthenticatedIdiotsProfileIndexRouteImport.update({
+    id: '/profile/',
+    path: '/profile/',
+    getParentRoute: () => AuthenticatedIdiotsRouteRoute,
+  } as any)
+const AuthenticatedIdiotsEventsIndexRoute =
+  AuthenticatedIdiotsEventsIndexRouteImport.update({
+    id: '/events/',
+    path: '/events/',
+    getParentRoute: () => AuthenticatedIdiotsRouteRoute,
+  } as any)
+const AuthenticatedIdiotsChatIndexRoute =
+  AuthenticatedIdiotsChatIndexRouteImport.update({
+    id: '/chat/',
+    path: '/chat/',
+    getParentRoute: () => AuthenticatedIdiotsRouteRoute,
+  } as any)
+const AuthenticatedIdiotsEventsEditEventIdRoute =
+  AuthenticatedIdiotsEventsEditEventIdRouteImport.update({
     id: '/events/edit/$eventId',
     path: '/events/edit/$eventId',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    getParentRoute: () => AuthenticatedIdiotsRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -86,22 +94,24 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
-  '/profile': typeof AuthenticatedProfileRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/events/': typeof AuthenticatedEventsIndexRoute
   '/idiots/': typeof AuthenticatedIdiotsIndexRoute
-  '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
+  '/idiots/chat/': typeof AuthenticatedIdiotsChatIndexRoute
+  '/idiots/events/': typeof AuthenticatedIdiotsEventsIndexRoute
+  '/idiots/profile/': typeof AuthenticatedIdiotsProfileIndexRoute
+  '/idiots/events/edit/$eventId': typeof AuthenticatedIdiotsEventsEditEventIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/profile': typeof AuthenticatedProfileRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/events': typeof AuthenticatedEventsIndexRoute
   '/idiots': typeof AuthenticatedIdiotsIndexRoute
-  '/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
+  '/idiots/chat': typeof AuthenticatedIdiotsChatIndexRoute
+  '/idiots/events': typeof AuthenticatedIdiotsEventsIndexRoute
+  '/idiots/profile': typeof AuthenticatedIdiotsProfileIndexRoute
+  '/idiots/events/edit/$eventId': typeof AuthenticatedIdiotsEventsEditEventIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -111,11 +121,12 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/_authenticated/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
-  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
   '/_authenticated/idiots/': typeof AuthenticatedIdiotsIndexRoute
-  '/_authenticated/events/edit/$eventId': typeof AuthenticatedEventsEditEventIdRoute
+  '/_authenticated/idiots/chat/': typeof AuthenticatedIdiotsChatIndexRoute
+  '/_authenticated/idiots/events/': typeof AuthenticatedIdiotsEventsIndexRoute
+  '/_authenticated/idiots/profile/': typeof AuthenticatedIdiotsProfileIndexRoute
+  '/_authenticated/idiots/events/edit/$eventId': typeof AuthenticatedIdiotsEventsEditEventIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -125,22 +136,24 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/idiots'
-    | '/profile'
     | '/api/auth/$'
-    | '/events/'
     | '/idiots/'
-    | '/events/edit/$eventId'
+    | '/idiots/chat/'
+    | '/idiots/events/'
+    | '/idiots/profile/'
+    | '/idiots/events/edit/$eventId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$'
     | '/sign-in'
     | '/sign-up'
-    | '/profile'
     | '/api/auth/$'
-    | '/events'
     | '/idiots'
-    | '/events/edit/$eventId'
+    | '/idiots/chat'
+    | '/idiots/events'
+    | '/idiots/profile'
+    | '/idiots/events/edit/$eventId'
   id:
     | '__root__'
     | '/'
@@ -149,11 +162,12 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/_authenticated/idiots'
-    | '/_authenticated/profile'
     | '/api/auth/$'
-    | '/_authenticated/events/'
     | '/_authenticated/idiots/'
-    | '/_authenticated/events/edit/$eventId'
+    | '/_authenticated/idiots/chat/'
+    | '/_authenticated/idiots/events/'
+    | '/_authenticated/idiots/profile/'
+    | '/_authenticated/idiots/events/edit/$eventId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -202,13 +216,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/idiots': {
       id: '/_authenticated/idiots'
       path: '/idiots'
@@ -223,13 +230,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIdiotsIndexRouteImport
       parentRoute: typeof AuthenticatedIdiotsRouteRoute
     }
-    '/_authenticated/events/': {
-      id: '/_authenticated/events/'
-      path: '/events'
-      fullPath: '/events/'
-      preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -237,23 +237,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/events/edit/$eventId': {
-      id: '/_authenticated/events/edit/$eventId'
+    '/_authenticated/idiots/profile/': {
+      id: '/_authenticated/idiots/profile/'
+      path: '/profile'
+      fullPath: '/idiots/profile/'
+      preLoaderRoute: typeof AuthenticatedIdiotsProfileIndexRouteImport
+      parentRoute: typeof AuthenticatedIdiotsRouteRoute
+    }
+    '/_authenticated/idiots/events/': {
+      id: '/_authenticated/idiots/events/'
+      path: '/events'
+      fullPath: '/idiots/events/'
+      preLoaderRoute: typeof AuthenticatedIdiotsEventsIndexRouteImport
+      parentRoute: typeof AuthenticatedIdiotsRouteRoute
+    }
+    '/_authenticated/idiots/chat/': {
+      id: '/_authenticated/idiots/chat/'
+      path: '/chat'
+      fullPath: '/idiots/chat/'
+      preLoaderRoute: typeof AuthenticatedIdiotsChatIndexRouteImport
+      parentRoute: typeof AuthenticatedIdiotsRouteRoute
+    }
+    '/_authenticated/idiots/events/edit/$eventId': {
+      id: '/_authenticated/idiots/events/edit/$eventId'
       path: '/events/edit/$eventId'
-      fullPath: '/events/edit/$eventId'
-      preLoaderRoute: typeof AuthenticatedEventsEditEventIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      fullPath: '/idiots/events/edit/$eventId'
+      preLoaderRoute: typeof AuthenticatedIdiotsEventsEditEventIdRouteImport
+      parentRoute: typeof AuthenticatedIdiotsRouteRoute
     }
   }
 }
 
 interface AuthenticatedIdiotsRouteRouteChildren {
   AuthenticatedIdiotsIndexRoute: typeof AuthenticatedIdiotsIndexRoute
+  AuthenticatedIdiotsChatIndexRoute: typeof AuthenticatedIdiotsChatIndexRoute
+  AuthenticatedIdiotsEventsIndexRoute: typeof AuthenticatedIdiotsEventsIndexRoute
+  AuthenticatedIdiotsProfileIndexRoute: typeof AuthenticatedIdiotsProfileIndexRoute
+  AuthenticatedIdiotsEventsEditEventIdRoute: typeof AuthenticatedIdiotsEventsEditEventIdRoute
 }
 
 const AuthenticatedIdiotsRouteRouteChildren: AuthenticatedIdiotsRouteRouteChildren =
   {
     AuthenticatedIdiotsIndexRoute: AuthenticatedIdiotsIndexRoute,
+    AuthenticatedIdiotsChatIndexRoute: AuthenticatedIdiotsChatIndexRoute,
+    AuthenticatedIdiotsEventsIndexRoute: AuthenticatedIdiotsEventsIndexRoute,
+    AuthenticatedIdiotsProfileIndexRoute: AuthenticatedIdiotsProfileIndexRoute,
+    AuthenticatedIdiotsEventsEditEventIdRoute:
+      AuthenticatedIdiotsEventsEditEventIdRoute,
   }
 
 const AuthenticatedIdiotsRouteRouteWithChildren =
@@ -263,16 +293,10 @@ const AuthenticatedIdiotsRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedIdiotsRouteRoute: typeof AuthenticatedIdiotsRouteRouteWithChildren
-  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
-  AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
-  AuthenticatedEventsEditEventIdRoute: typeof AuthenticatedEventsEditEventIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIdiotsRouteRoute: AuthenticatedIdiotsRouteRouteWithChildren,
-  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
-  AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
-  AuthenticatedEventsEditEventIdRoute: AuthenticatedEventsEditEventIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
