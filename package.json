@@ -21,6 +21,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.5.0",
+    "prisma": "^7.5.0",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@t3-oss/env-core": "^0.13.10",
@@ -62,7 +63,6 @@
     "@vitejs/plugin-react": "^5.1.4",
     "dotenv-cli": "^10.0.0",
     "jsdom": "^27.4.0",
-    "prisma": "^7.5.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",

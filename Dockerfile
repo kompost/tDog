@@ -48,11 +48,15 @@ COPY --from=builder /app/src/generated ./src/generated
 # Prisma client is already generated and copied from builder
 # No need to regenerate in production stage
 
+# Copy entrypoint script
+COPY entrypoint.sh ./
+RUN chmod +x entrypoint.sh
+
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Set environment to production
 ENV NODE_ENV=production
 
-# Start the application
-CMD ["node", ".output/server/index.mjs"]
+# Run migrations then start the application
+CMD ["./entrypoint.sh"]
