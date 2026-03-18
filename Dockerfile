@@ -34,6 +34,7 @@ WORKDIR /app
 # Copy package files and prod node_modules from builder
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY prisma ./prisma
+COPY prisma.config.ts ./
 COPY --from=builder /app/node_modules ./node_modules
 
 # Copy built application from builder
