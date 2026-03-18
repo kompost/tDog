@@ -22,9 +22,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Docker image (no cache)
+      - name: Build Docker image
         run: |
-          docker build --no-cache -t tdog:${{ github.sha }} .
+          docker build -t tdog:${{ github.sha }} .
           docker tag tdog:${{ github.sha }} tdog:latest
 
       - name: Save Docker image to tar

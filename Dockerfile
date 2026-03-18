@@ -29,17 +29,12 @@ RUN pnpm build
 # Production stage
 FROM node:24-alpine
 
-# Install pnpm
-RUN npm install -g pnpm
-
 WORKDIR /app
 
-# Copy package files
+# Copy package files and prod node_modules from builder
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY prisma ./prisma
-
-# Install production dependencies only
-RUN pnpm install --prod --frozen-lockfile
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copy built application from builder
 COPY --from=builder /app/.output ./.output
