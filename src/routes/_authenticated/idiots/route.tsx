@@ -14,8 +14,8 @@ const navItems = [
 function IdiotsLayout() {
     return (
         <div className="flex flex-col h-[100svh]">
-            <main className="flex-1 min-h-0 pb-24">
-                <div className="mx-auto w-full max-w-[900px] p-4 h-full">
+            <main className="flex-1 min-h-0 overflow-y-auto pb-24">
+                <div className="mx-auto w-full max-w-[900px] p-4">
                     <Outlet />
                 </div>
             </main>
