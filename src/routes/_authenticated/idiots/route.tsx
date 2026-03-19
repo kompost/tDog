@@ -15,7 +15,7 @@ function IdiotsLayout() {
     return (
         <div className="flex flex-col h-[100svh]">
             <main className="flex-1 min-h-0 pb-24">
-                <div className="mx-auto w-full max-w-[900px] px-4 h-full">
+                <div className="mx-auto w-full max-w-[900px] p-4 h-full">
                     <Outlet />
                 </div>
             </main>

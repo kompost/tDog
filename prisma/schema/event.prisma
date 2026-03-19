@@ -1,9 +1,15 @@
+enum EventVisibility {
+  ALL
+  SPECIFIC
+}
+
 model Event {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
   description String
   date        DateTime
   location    String?
+  visibility  EventVisibility @default(ALL)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -12,15 +18,37 @@ model Event {
   creatorId String?
 
   participants EventParticipant[]
+  invitees     EventInvitee[]
 
   @@map("event")
 }
 
-model EventParticipant {
+model EventInvitee {
   id        String   @id @default(cuid())
   eventId   String
-  userId    String?
+  userId    String
   createdAt DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([userId])
+  @@index([eventId])
+  @@map("event_invitee")
+}
+
+enum ParticipationStatus {
+  GOING
+  FOTT
+}
+
+model EventParticipant {
+  id        String              @id @default(cuid())
+  eventId   String
+  userId    String?
+  status    ParticipationStatus @default(FOTT)
+  createdAt DateTime            @default(now())
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
   user  User? @relation(fields: [userId], references: [id], onDelete: SetNull)

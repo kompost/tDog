@@ -1,9 +1,19 @@
 import { APIError, betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { prisma } from '@/db'
+import { Role } from '@/generated/prisma/enums'
 
 export const auth = betterAuth({
     trustedOrigins: process.env.TRUSTED_ORIGINS?.split(',') ?? [],
+    user: {
+        additionalFields: {
+            role: {
+                type: 'string' as const,
+                required: true,
+                defaultValue: Role.USER,
+            },
+        },
+    },
     database: prismaAdapter(prisma, {
         provider: 'postgresql',
     }),

@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { useState } from 'react'
 import * as z from 'zod'
@@ -10,15 +10,15 @@ import { Label } from '@/components/ui/label'
 import { prisma } from '@/db'
 import { requireAuth } from '@/lib/auth-server'
 
-// Validation schema
 const eventSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     description: z.string().min(1, 'Description is required'),
     date: z.string().min(1, 'Date is required'),
     location: z.string().optional(),
+    visibility: z.enum(['ALL', 'SPECIFIC']),
+    inviteeIds: z.array(z.string()),
 })
 
-// Server function to get event
 const getEvent = createServerFn({ method: 'GET' })
     .inputValidator((data: unknown) => {
         return z.object({ eventId: z.string() }).parse(data)
@@ -27,41 +27,41 @@ const getEvent = createServerFn({ method: 'GET' })
         const event = await prisma.event.findUnique({
             where: { id: data.eventId },
             include: {
-                creator: {
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                        image: true,
-                    },
-                },
+                creator: { select: { id: true, name: true, email: true, image: true } },
                 participants: {
                     include: {
-                        user: {
-                            select: {
-                                id: true,
-                                name: true,
-                                email: true,
-                                image: true,
-                            },
-                        },
+                        user: { select: { id: true, name: true, email: true, image: true } },
+                    },
+                },
+                invitees: {
+                    include: {
+                        user: { select: { id: true, name: true, email: true } },
                     },
                 },
             },
         })
 
-        if (!event) {
-            throw new Error('Event not found')
-        }
-
+        if (!event) throw new Error('Event not found')
         return event
     })
 
-// Server function to create event
-const createEvent = createServerFn({ method: 'POST' })
-    .inputValidator((data: unknown) => {
-        return eventSchema.parse(data)
+const checkCanManageEvents = createServerFn({ method: 'GET' }).handler(async ({ request }) => {
+    const { user } = await requireAuth(request)
+    if (user.role !== 'ADMIN' && user.role !== 'COLLABORATOR') {
+        throw redirect({ to: '/idiots/events' })
+    }
+})
+
+const listAllUsers = createServerFn({ method: 'GET' }).handler(async ({ request }) => {
+    await requireAuth(request)
+    return prisma.user.findMany({
+        select: { id: true, name: true, email: true },
+        orderBy: { name: 'asc' },
     })
+})
+
+const createEvent = createServerFn({ method: 'POST' })
+    .inputValidator((data: unknown) => eventSchema.parse(data))
     .handler(async ({ data, request }) => {
         const { user } = await requireAuth(request)
 
@@ -73,37 +73,29 @@ const createEvent = createServerFn({ method: 'POST' })
                 date: new Date(data.date),
                 location: data.location || null,
                 creatorId: user.id,
+                visibility: data.visibility,
             },
         })
+
+        if (data.visibility === 'SPECIFIC' && data.inviteeIds.length > 0) {
+            await prisma.eventInvitee.createMany({
+                data: data.inviteeIds.map((userId) => ({ eventId: event.id, userId })),
+            })
+        }
 
         return event
     })
 
-// Server function to update event
 const updateEvent = createServerFn({ method: 'POST' })
     .inputValidator((data: unknown) => {
-        return z
-            .object({
-                eventId: z.string(),
-            })
-            .merge(eventSchema)
-            .parse(data)
+        return z.object({ eventId: z.string() }).merge(eventSchema).parse(data)
     })
     .handler(async ({ data, request }) => {
         const { user } = await requireAuth(request)
 
-        // Check if user is the creator
-        const existingEvent = await prisma.event.findUnique({
-            where: { id: data.eventId },
-        })
-
-        if (!existingEvent) {
-            throw new Error('Event not found')
-        }
-
-        if (existingEvent.creatorId !== user.id) {
-            throw new Error('You do not have permission to edit this event')
-        }
+        const existingEvent = await prisma.event.findUnique({ where: { id: data.eventId } })
+        if (!existingEvent) throw new Error('Event not found')
+        if (existingEvent.creatorId !== user.id) throw new Error('You do not have permission to edit this event')
 
         const event = await prisma.event.update({
             where: { id: data.eventId },
@@ -112,13 +104,23 @@ const updateEvent = createServerFn({ method: 'POST' })
                 description: data.description,
                 date: new Date(data.date),
                 location: data.location || null,
+                visibility: data.visibility,
             },
         })
+
+        // Sync invitees
+        await prisma.eventInvitee.deleteMany({ where: { eventId: data.eventId } })
+        if (data.visibility === 'SPECIFIC' && data.inviteeIds.length > 0) {
+            await prisma.eventInvitee.createMany({
+                data: data.inviteeIds.map((userId) => ({ eventId: data.eventId, userId })),
+            })
+        }
 
         return event
     })
 
 export const Route = createFileRoute('/_authenticated/idiots/events/edit/$eventId')({
+    loader: () => checkCanManageEvents(),
     component: EditEventPage,
 })
 
@@ -132,10 +134,12 @@ function EditEventPage() {
     const [description, setDescription] = useState('')
     const [date, setDate] = useState('')
     const [location, setLocation] = useState('')
+    const [visibility, setVisibility] = useState<'ALL' | 'SPECIFIC'>('ALL')
+    const [inviteeIds, setInviteeIds] = useState<string[]>([])
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [initialized, setInitialized] = useState(false)
 
-    // Only fetch event if editing existing one
     const { data: event } = useSuspenseQuery({
         queryKey: ['event', eventId],
         queryFn: async () => {
@@ -144,15 +148,24 @@ function EditEventPage() {
         },
     })
 
-    // Initialize form with event data if editing
-    useState(() => {
-        if (event) {
-            setName(event.name)
-            setDescription(event.description)
-            setDate(new Date(event.date).toISOString().slice(0, 16))
-            setLocation(event.location || '')
-        }
+    const { data: allUsers } = useSuspenseQuery({
+        queryKey: ['all-users'],
+        queryFn: () => listAllUsers(),
     })
+
+    if (event && !initialized) {
+        setName(event.name)
+        setDescription(event.description)
+        setDate(new Date(event.date).toISOString().slice(0, 16))
+        setLocation(event.location || '')
+        setVisibility(event.visibility as 'ALL' | 'SPECIFIC')
+        setInviteeIds(event.invitees.map((i) => i.userId))
+        setInitialized(true)
+    }
+
+    const toggleInvitee = (userId: string) => {
+        setInviteeIds((prev) => (prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]))
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -160,12 +173,7 @@ function EditEventPage() {
         setError(null)
 
         try {
-            const formData = {
-                name,
-                description,
-                date,
-                location,
-            }
+            const formData = { name, description, date, location, visibility, inviteeIds }
 
             if (isNewEvent) {
                 await createEvent({ data: formData })
@@ -182,7 +190,7 @@ function EditEventPage() {
     }
 
     return (
-        <div className="p-8 max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto">
             <Card>
                 <CardHeader>
                     <CardTitle>{isNewEvent ? 'Create Event' : 'Edit Event'}</CardTitle>
@@ -241,6 +249,57 @@ function EditEventPage() {
                                 placeholder="Conference Room A"
                             />
                         </div>
+
+                        <div className="space-y-2">
+                            <Label>Visibility</Label>
+                            <div className="flex gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setVisibility('ALL')}
+                                    className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
+                                        visibility === 'ALL'
+                                            ? 'bg-primary text-primary-foreground border-primary'
+                                            : 'bg-background border-input hover:bg-accent'
+                                    }`}
+                                >
+                                    All
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setVisibility('SPECIFIC')}
+                                    className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
+                                        visibility === 'SPECIFIC'
+                                            ? 'bg-primary text-primary-foreground border-primary'
+                                            : 'bg-background border-input hover:bg-accent'
+                                    }`}
+                                >
+                                    Specific users
+                                </button>
+                            </div>
+                        </div>
+
+                        {visibility === 'SPECIFIC' && (
+                            <div className="space-y-2">
+                                <Label>Invite users</Label>
+                                <div className="border rounded-md divide-y max-h-48 overflow-y-auto">
+                                    {allUsers?.map((u) => (
+                                        <label
+                                            key={u.id}
+                                            className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-accent"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={inviteeIds.includes(u.id)}
+                                                onChange={() => toggleInvitee(u.id)}
+                                                className="h-4 w-4"
+                                            />
+                                            <span className="text-sm font-medium">{u.name}</span>
+                                            <span className="text-sm text-gray-500">{u.email}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         <div className="flex gap-4">
                             <Button type="submit" disabled={isSubmitting}>

@@ -26,9 +26,12 @@ function StatsPage() {
     const topAttender = members.reduce((a, b) => (a.attended > b.attended ? a : b))
 
     return (
-        <div className="p-4 space-y-6 overflow-y-auto">
-            <h1 className="text-2xl font-bold">Stats</h1>
-
+        <div className="relative space-y-6 overflow-y-auto">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-10">
+                <span className="text-red-600 font-black text-5xl opacity-60 -rotate-[30deg] tracking-widest select-none">
+                    Kommer snart
+                </span>
+            </div>
             <div className="grid grid-cols-3 gap-3">
                 <div className="rounded-xl border bg-card p-4 text-center">
                     <p className="text-2xl font-bold">{totalEvents}</p>
@@ -59,10 +62,7 @@ function StatsPage() {
                                     </span>
                                 </div>
                                 <div className="h-2 rounded-full bg-muted overflow-hidden">
-                                    <div
-                                        className="h-full rounded-full bg-primary"
-                                        style={{ width: `${pct}%` }}
-                                    />
+                                    <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
                                 </div>
                             </div>
                         )
@@ -77,7 +77,9 @@ function StatsPage() {
                             <p className="font-medium">{e.name}</p>
                             <p className="text-xs text-muted-foreground">{e.date}</p>
                         </div>
-                        <span className="text-muted-foreground">{e.attendees} / {members.length}</span>
+                        <span className="text-muted-foreground">
+                            {e.attendees} / {members.length}
+                        </span>
                     </div>
                 ))}
             </div>

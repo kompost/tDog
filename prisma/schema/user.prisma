@@ -1,9 +1,17 @@
+enum Role {
+  ADMIN
+  COLLABORATOR
+  USER
+  GUEST
+}
+
 model User {
   id            String    @id
   name          String
   email         String
   emailVerified Boolean   @default(false)
   image         String?
+  role          Role      @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
@@ -11,6 +19,7 @@ model User {
 
   createdEvents Event[]            @relation("EventCreator")
   eventParticipations EventParticipant[]
+  eventInvitations    EventInvitee[]
 
   @@unique([email])
   @@map("user")
