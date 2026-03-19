@@ -12,6 +12,8 @@ export const Route = createFileRoute('/sign-in')({
 
 function SignInPage() {
     const navigate = useNavigate()
+    const emailId = useId()
+    const passwordId = useId()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState<string | null>(null)
@@ -57,9 +59,9 @@ function SignInPage() {
                             </div>
                         )}
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor={emailId}>Email</Label>
                             <Input
-                                id={useId()}
+                                id={emailId}
                                 type="email"
                                 placeholder="john@example.com"
                                 value={email}
@@ -68,9 +70,9 @@ function SignInPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor={passwordId}>Password</Label>
                             <Input
-                                id={useId()}
+                                id={passwordId}
                                 type="password"
                                 placeholder="••••••••"
                                 value={password}

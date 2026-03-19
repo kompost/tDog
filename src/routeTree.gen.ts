@@ -14,6 +14,7 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedIdiotsRouteRouteImport } from './routes/_authenticated/idiots/route'
 import { Route as AuthenticatedIdiotsIndexRouteImport } from './routes/_authenticated/idiots/index'
 import { Route as ApiChatStreamRouteImport } from './routes/api/chat/stream'
@@ -47,6 +48,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedIdiotsRouteRoute =
   AuthenticatedIdiotsRouteRouteImport.update({
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
+  '/admin': typeof AuthenticatedAdminRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/chat/send': typeof ApiChatSendRoute
   '/api/chat/stream': typeof ApiChatStreamRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/$': typeof SplatRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/chat/send': typeof ApiChatSendRoute
   '/api/chat/stream': typeof ApiChatStreamRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/_authenticated/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/chat/send': typeof ApiChatSendRoute
   '/api/chat/stream': typeof ApiChatStreamRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/idiots'
+    | '/admin'
     | '/api/auth/$'
     | '/api/chat/send'
     | '/api/chat/stream'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/sign-in'
     | '/sign-up'
+    | '/admin'
     | '/api/auth/$'
     | '/api/chat/send'
     | '/api/chat/stream'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/_authenticated/idiots'
+    | '/_authenticated/admin'
     | '/api/auth/$'
     | '/api/chat/send'
     | '/api/chat/stream'
@@ -241,6 +253,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/idiots': {
       id: '/_authenticated/idiots'
@@ -333,10 +352,12 @@ const AuthenticatedIdiotsRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedIdiotsRouteRoute: typeof AuthenticatedIdiotsRouteRouteWithChildren
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIdiotsRouteRoute: AuthenticatedIdiotsRouteRouteWithChildren,
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

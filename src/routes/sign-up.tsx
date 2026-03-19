@@ -12,6 +12,9 @@ export const Route = createFileRoute('/sign-up')({
 
 function SignUpPage() {
     const navigate = useNavigate()
+    const nameId = useId()
+    const emailId = useId()
+    const passwordId = useId()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -59,9 +62,9 @@ function SignUpPage() {
                             </div>
                         )}
                         <div className="space-y-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor={nameId}>Name</Label>
                             <Input
-                                id={useId()}
+                                id={nameId}
                                 type="text"
                                 placeholder="John Doe"
                                 value={name}
@@ -70,9 +73,9 @@ function SignUpPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor={emailId}>Email</Label>
                             <Input
-                                id={useId()}
+                                id={emailId}
                                 type="email"
                                 placeholder="john@example.com"
                                 value={email}
@@ -81,9 +84,9 @@ function SignUpPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor={passwordId}>Password</Label>
                             <Input
-                                id={useId()}
+                                id={passwordId}
                                 type="password"
                                 placeholder="••••••••"
                                 value={password}

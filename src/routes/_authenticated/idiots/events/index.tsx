@@ -69,13 +69,15 @@ function formatEventDate(date: Date | string) {
 
 function Countdown({ date }: { date: Date | string }) {
     const target = new Date(date).getTime()
-    const [diff, setDiff] = useState(target - Date.now())
+    const [diff, setDiff] = useState<number | null>(null)
 
     useEffect(() => {
+        setDiff(target - Date.now())
         const id = setInterval(() => setDiff(target - Date.now()), 1000)
         return () => clearInterval(id)
     }, [target])
 
+    if (diff === null) return null
     if (diff <= 0) return <span className="text-green-600 font-medium">Happening now</span>
 
     const totalSeconds = Math.floor(diff / 1000)
