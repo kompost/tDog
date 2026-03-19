@@ -16,6 +16,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedIdiotsRouteRouteImport } from './routes/_authenticated/idiots/route'
 import { Route as AuthenticatedIdiotsIndexRouteImport } from './routes/_authenticated/idiots/index'
+import { Route as ApiChatStreamRouteImport } from './routes/api/chat/stream'
+import { Route as ApiChatSendRouteImport } from './routes/api/chat/send'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthenticatedIdiotsProfileIndexRouteImport } from './routes/_authenticated/idiots/profile/index'
 import { Route as AuthenticatedIdiotsEventsIndexRouteImport } from './routes/_authenticated/idiots/events/index'
@@ -58,6 +60,16 @@ const AuthenticatedIdiotsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedIdiotsRouteRoute,
   } as any)
+const ApiChatStreamRoute = ApiChatStreamRouteImport.update({
+  id: '/api/chat/stream',
+  path: '/api/chat/stream',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiChatSendRoute = ApiChatSendRouteImport.update({
+  id: '/api/chat/send',
+  path: '/api/chat/send',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -95,6 +107,8 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof SignUpRoute
   '/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/chat/send': typeof ApiChatSendRoute
+  '/api/chat/stream': typeof ApiChatStreamRoute
   '/idiots/': typeof AuthenticatedIdiotsIndexRoute
   '/idiots/chat/': typeof AuthenticatedIdiotsChatIndexRoute
   '/idiots/events/': typeof AuthenticatedIdiotsEventsIndexRoute
@@ -107,6 +121,8 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/chat/send': typeof ApiChatSendRoute
+  '/api/chat/stream': typeof ApiChatStreamRoute
   '/idiots': typeof AuthenticatedIdiotsIndexRoute
   '/idiots/chat': typeof AuthenticatedIdiotsChatIndexRoute
   '/idiots/events': typeof AuthenticatedIdiotsEventsIndexRoute
@@ -122,6 +138,8 @@ export interface FileRoutesById {
   '/sign-up': typeof SignUpRoute
   '/_authenticated/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/chat/send': typeof ApiChatSendRoute
+  '/api/chat/stream': typeof ApiChatStreamRoute
   '/_authenticated/idiots/': typeof AuthenticatedIdiotsIndexRoute
   '/_authenticated/idiots/chat/': typeof AuthenticatedIdiotsChatIndexRoute
   '/_authenticated/idiots/events/': typeof AuthenticatedIdiotsEventsIndexRoute
@@ -137,6 +155,8 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/idiots'
     | '/api/auth/$'
+    | '/api/chat/send'
+    | '/api/chat/stream'
     | '/idiots/'
     | '/idiots/chat/'
     | '/idiots/events/'
@@ -149,6 +169,8 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/api/auth/$'
+    | '/api/chat/send'
+    | '/api/chat/stream'
     | '/idiots'
     | '/idiots/chat'
     | '/idiots/events'
@@ -163,6 +185,8 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/_authenticated/idiots'
     | '/api/auth/$'
+    | '/api/chat/send'
+    | '/api/chat/stream'
     | '/_authenticated/idiots/'
     | '/_authenticated/idiots/chat/'
     | '/_authenticated/idiots/events/'
@@ -177,6 +201,8 @@ export interface RootRouteChildren {
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiChatSendRoute: typeof ApiChatSendRoute
+  ApiChatStreamRoute: typeof ApiChatStreamRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -229,6 +255,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/idiots/'
       preLoaderRoute: typeof AuthenticatedIdiotsIndexRouteImport
       parentRoute: typeof AuthenticatedIdiotsRouteRoute
+    }
+    '/api/chat/stream': {
+      id: '/api/chat/stream'
+      path: '/api/chat/stream'
+      fullPath: '/api/chat/stream'
+      preLoaderRoute: typeof ApiChatStreamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/chat/send': {
+      id: '/api/chat/send'
+      path: '/api/chat/send'
+      fullPath: '/api/chat/send'
+      preLoaderRoute: typeof ApiChatSendRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -309,6 +349,8 @@ const rootRouteChildren: RootRouteChildren = {
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiChatSendRoute: ApiChatSendRoute,
+  ApiChatStreamRoute: ApiChatStreamRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

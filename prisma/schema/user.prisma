@@ -20,6 +20,7 @@ model User {
   createdEvents Event[]            @relation("EventCreator")
   eventParticipations EventParticipant[]
   eventInvitations    EventInvitee[]
+  messages      Message[]
 
   @@unique([email])
   @@map("user")

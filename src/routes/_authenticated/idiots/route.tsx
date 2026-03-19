@@ -13,27 +13,27 @@ const navItems = [
 
 function IdiotsLayout() {
     return (
-        <div className="flex flex-col h-[100svh]">
-            <main className="flex-1 min-h-0 overflow-y-auto pb-24">
-                <div className="mx-auto w-full max-w-[900px] p-4">
-                    <Outlet />
-                </div>
+        <div style={{ display: 'grid', gridTemplateRows: '1fr 80px', position: 'fixed', inset: 0 }}>
+            <main className="pt-[16px] px-[16px]" style={{ overflowY: 'auto', minHeight: 0, overscrollBehavior: 'none' }}>
+                <Outlet />
             </main>
 
-            <nav className="fixed bottom-4 left-4 right-4 z-50 rounded-2xl bg-background/80 backdrop-blur-md border shadow-lg">
-                <div className="flex items-center justify-around h-16">
-                    {navItems.map(({ to, label, icon: Icon }) => (
-                        <Link
-                            key={to}
-                            to={to}
-                            className="flex flex-col items-center gap-1 px-4 py-2 text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
-                        >
-                            <Icon className="size-5" />
-                            <span className="text-xs">{label}</span>
-                        </Link>
-                    ))}
-                </div>
-            </nav>
+            <div className="flex items-center justify-center px-[16px]">
+                <nav className="w-full rounded-2xl bg-background/80 backdrop-blur-md border shadow-lg">
+                    <div className="flex items-center justify-around h-[64px]">
+                        {navItems.map(({ to, label, icon: Icon }) => (
+                            <Link
+                                key={to}
+                                to={to}
+                                className="flex flex-col items-center gap-1 px-4 py-2 text-muted-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
+                            >
+                                <Icon className="size-5" />
+                                <span className="text-xs">{label}</span>
+                            </Link>
+                        ))}
+                    </div>
+                </nav>
+            </div>
         </div>
     )
 }
