@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
+import { useState } from 'react'
 
 const catJokes = [
     "Why don't cats play poker in the jungle? Too many cheetahs!",
@@ -19,18 +19,17 @@ const catJokes = [
     'Why was the cat so agitated? Because he was in a bad mewd!',
 ]
 
-const getRandomJoke = createServerFn().handler(() => {
+const getRandomJoke = () => {
     const randomIndex = Math.floor(Math.random() * catJokes.length)
-    return { joke: catJokes[randomIndex] }
-})
+    return catJokes[randomIndex]
+}
 
 export const Route = createFileRoute('/')({
     component: Page,
-    loader: () => getRandomJoke(),
 })
 
 export function Page() {
-    const { joke } = Route.useLoaderData()
+    const [joke, setJoke] = useState(getRandomJoke())
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50 p-4">
@@ -47,7 +46,7 @@ export function Page() {
                 <div className="text-center mt-8">
                     <button
                         type="button"
-                        onClick={() => window.location.reload()}
+                        onClick={() => setJoke(getRandomJoke())}
                         className="px-6 py-3 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-md"
                     >
                         Get Another Joke

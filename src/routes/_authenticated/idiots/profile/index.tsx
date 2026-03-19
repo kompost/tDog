@@ -1,4 +1,3 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouteContext } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { Button } from '@/components/ui/button'
@@ -27,17 +26,14 @@ const getUserProfile = createServerFn({ method: 'GET' }).handler(async ({ reques
 })
 
 export const Route = createFileRoute('/_authenticated/idiots/profile/')({
+    loader: () => getUserProfile(),
     component: ProfilePage,
 })
 
 function ProfilePage() {
     const navigate = useNavigate()
     const { session } = useRouteContext({ from: '/_authenticated' })
-
-    const { data } = useSuspenseQuery({
-        queryKey: ['profile'],
-        queryFn: () => getUserProfile(),
-    })
+    const data = Route.useLoaderData()
 
     const handleSignOut = async () => {
         await authClient.signOut()
