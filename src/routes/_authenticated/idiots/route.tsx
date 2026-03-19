@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
-import { CalendarDays, MessageCircle, User } from 'lucide-react'
+import { CalendarDays, MessageCircle, BarChart2 } from 'lucide-react'
 
 export const Route = createFileRoute('/_authenticated/idiots')({
     component: IdiotsLayout,
@@ -8,19 +8,19 @@ export const Route = createFileRoute('/_authenticated/idiots')({
 const navItems = [
     { to: '/idiots/events', label: 'Events', icon: CalendarDays },
     { to: '/idiots/chat', label: 'Chat', icon: MessageCircle },
-    { to: '/idiots/profile', label: 'Profile', icon: User },
+    { to: '/idiots/profile', label: 'Stats', icon: BarChart2 },
 ] as const
 
 function IdiotsLayout() {
     return (
-        <div className="flex flex-col min-h-screen">
-            <main className="flex-1 pb-16">
-                <div className="mx-auto w-full max-w-[900px] px-4">
+        <div className="flex flex-col h-[100svh]">
+            <main className="flex-1 min-h-0 pb-24">
+                <div className="mx-auto w-full max-w-[900px] px-4 h-full">
                     <Outlet />
                 </div>
             </main>
 
-            <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background">
+            <nav className="fixed bottom-4 left-4 right-4 z-50 rounded-2xl bg-background/80 backdrop-blur-md border shadow-lg">
                 <div className="flex items-center justify-around h-16">
                     {navItems.map(({ to, label, icon: Icon }) => (
                         <Link

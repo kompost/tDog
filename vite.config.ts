@@ -17,7 +17,6 @@ const config = defineConfig({
     tailwindcss(),
     tanstackStart(),
     viteReact(),
-  ],
-})
+  ]})
 
 export default config

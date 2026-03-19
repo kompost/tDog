@@ -1,91 +1,85 @@
-import { createFileRoute, useNavigate, useRouteContext } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-import { Button } from '@/components/ui/button'
-import { authClient } from '@/lib/auth-client'
-import { requireAuth } from '@/lib/auth-server'
-
-// Example protected server function
-const getUserProfile = createServerFn({ method: 'GET' }).handler(async ({ request }) => {
-    // This requires authentication and throws if not authenticated
-    const { user } = await requireAuth(request)
-
-    // You can now safely use user.id for database queries
-    // For example:
-    // const profile = await db.profile.findUnique({
-    //     where: { userId: user.id }
-    // })
-
-    return {
-        user,
-        // Add any other user-specific data here
-        additionalData: {
-            lastLogin: new Date().toISOString(),
-            accountType: 'free',
-        },
-    }
-})
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/idiots/profile/')({
-    loader: () => getUserProfile(),
-    component: ProfilePage,
+    component: StatsPage,
 })
 
-function ProfilePage() {
-    const navigate = useNavigate()
-    const { session } = useRouteContext({ from: '/_authenticated' })
-    const data = Route.useLoaderData()
+const members = [
+    { name: 'Anders', attended: 18, total: 20 },
+    { name: 'Mikkel', attended: 15, total: 20 },
+    { name: 'Jonas', attended: 20, total: 20 },
+    { name: 'Rasmus', attended: 12, total: 20 },
+    { name: 'Frederik', attended: 17, total: 20 },
+    { name: 'Søren', attended: 9, total: 20 },
+]
 
-    const handleSignOut = async () => {
-        await authClient.signOut()
-        navigate({ to: '/sign-in' })
-    }
+const recentEvents = [
+    { name: 'Friday Session', date: '14 Mar', attendees: 5 },
+    { name: 'Sunday Run', date: '9 Mar', attendees: 6 },
+    { name: 'Friday Session', date: '7 Mar', attendees: 4 },
+    { name: 'Tournament', date: '1 Mar', attendees: 6 },
+]
+
+function StatsPage() {
+    const totalEvents = 20
+    const avgAttendance = Math.round(members.reduce((sum, m) => sum + m.attended, 0) / members.length)
+    const topAttender = members.reduce((a, b) => (a.attended > b.attended ? a : b))
 
     return (
-        <div className="p-8 max-w-2xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Profile</h1>
-                <Button onClick={handleSignOut} variant="outline">
-                    Sign Out
-                </Button>
+        <div className="p-4 space-y-6 overflow-y-auto">
+            <h1 className="text-2xl font-bold">Stats</h1>
+
+            <div className="grid grid-cols-3 gap-3">
+                <div className="rounded-xl border bg-card p-4 text-center">
+                    <p className="text-2xl font-bold">{totalEvents}</p>
+                    <p className="text-xs text-muted-foreground mt-1">Events</p>
+                </div>
+                <div className="rounded-xl border bg-card p-4 text-center">
+                    <p className="text-2xl font-bold">{avgAttendance}</p>
+                    <p className="text-xs text-muted-foreground mt-1">Avg. attendance</p>
+                </div>
+                <div className="rounded-xl border bg-card p-4 text-center">
+                    <p className="text-2xl font-bold">{topAttender.attended}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{topAttender.name}'s streak</p>
+                </div>
             </div>
 
-            <div className="space-y-6">
-                <div className="bg-white border rounded-lg p-6">
-                    <h2 className="text-xl font-semibold mb-4">User Information</h2>
-                    <div className="space-y-2">
-                        <p>
-                            <span className="font-medium">Name:</span> {session.user.name}
-                        </p>
-                        <p>
-                            <span className="font-medium">Email:</span> {session.user.email}
-                        </p>
-                        <p>
-                            <span className="font-medium">Email Verified:</span>{' '}
-                            {session.user.emailVerified ? 'Yes' : 'No'}
-                        </p>
-                        <p>
-                            <span className="font-medium">User ID:</span> {session.user.id}
-                        </p>
-                    </div>
-                </div>
+            <div className="rounded-xl border bg-card p-4 space-y-3">
+                <h2 className="font-semibold">Attendance</h2>
+                {members
+                    .sort((a, b) => b.attended - a.attended)
+                    .map((m) => {
+                        const pct = Math.round((m.attended / m.total) * 100)
+                        return (
+                            <div key={m.name} className="space-y-1">
+                                <div className="flex justify-between text-sm">
+                                    <span>{m.name}</span>
+                                    <span className="text-muted-foreground">
+                                        {m.attended}/{m.total}
+                                    </span>
+                                </div>
+                                <div className="h-2 rounded-full bg-muted overflow-hidden">
+                                    <div
+                                        className="h-full rounded-full bg-primary"
+                                        style={{ width: `${pct}%` }}
+                                    />
+                                </div>
+                            </div>
+                        )
+                    })}
+            </div>
 
-                <div className="bg-white border rounded-lg p-6">
-                    <h2 className="text-xl font-semibold mb-4">Session Information</h2>
-                    <div className="space-y-2">
-                        <p>
-                            <span className="font-medium">Session ID:</span> {session.session.id}
-                        </p>
+            <div className="rounded-xl border bg-card p-4 space-y-3">
+                <h2 className="font-semibold">Recent Events</h2>
+                {recentEvents.map((e) => (
+                    <div key={e.name + e.date} className="flex justify-between items-center text-sm">
+                        <div>
+                            <p className="font-medium">{e.name}</p>
+                            <p className="text-xs text-muted-foreground">{e.date}</p>
+                        </div>
+                        <span className="text-muted-foreground">{e.attendees} / {members.length}</span>
                     </div>
-                </div>
-
-                <div className="bg-white border rounded-lg p-6">
-                    <h2 className="text-xl font-semibold mb-4">Additional Data (from protected server function)</h2>
-                    <div className="space-y-2">
-                        <p>
-                            <span className="font-medium">Account Type:</span> {data.additionalData.accountType}
-                        </p>
-                    </div>
-                </div>
+                ))}
             </div>
         </div>
     )

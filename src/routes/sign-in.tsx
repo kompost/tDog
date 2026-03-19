@@ -32,7 +32,7 @@ function SignInPage() {
                 setError(result.error.message || 'Sign in failed')
             } else {
                 // Redirect to home page or dashboard after successful sign in
-                navigate({ to: '/' })
+                navigate({ to: '/idiots' })
             }
         } catch (err) {
             setError('An unexpected error occurred')

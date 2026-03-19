@@ -8,7 +8,6 @@ import { requireAuth } from '@/lib/auth-server'
 // Server function to list user's events
 const listMyEvents = createServerFn({ method: 'GET' }).handler(async ({ request }) => {
     const { user } = await requireAuth(request)
-    console.log('testing')
 
     const events = await prisma.event.findMany({
         where: {

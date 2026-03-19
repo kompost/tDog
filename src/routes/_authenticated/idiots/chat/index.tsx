@@ -15,7 +15,7 @@ function ChatPage() {
     const bottomRef = useRef<HTMLDivElement>(null)
 
     return (
-        <div className="flex flex-col h-[calc(100vh-4rem)]">
+        <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
                 {messages.map((msg) => (
                     <div
