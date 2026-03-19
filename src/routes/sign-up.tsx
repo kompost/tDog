@@ -37,7 +37,7 @@ function SignUpPage() {
                 setError(result.error.message || 'Sign up failed')
             } else {
                 // Redirect to home page or dashboard after successful sign up
-                navigate({ to: '/' })
+                navigate({ to: '/idiots' })
             }
         } catch (err) {
             setError('An unexpected error occurred')
