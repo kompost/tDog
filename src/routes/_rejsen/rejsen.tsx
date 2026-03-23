@@ -4,24 +4,27 @@ import { useReducer, useState } from 'react'
 import { prisma } from '@/db'
 
 const NIGHTS = [2, 3] as const
-const DATES = ['18-20. september', '25-27. september', '2-4. oktober'] as const
+
+const DATES: Record<2 | 3, string[]> = {
+    2: ['18-20. september', '25-27. september', '2-4. oktober'],
+    3: ['17-20. september', '24-27. september', '1-4. oktober'],
+}
 
 const getResponses = createServerFn({ method: 'GET' }).handler(async () => {
     return prisma.tripPollResponse.findMany({ orderBy: { createdAt: 'asc' } })
 })
 
 const submitResponse = createServerFn({ method: 'POST' })
-    .inputValidator((data: unknown) => data as { name: string; nights: number[]; dates: string[] })
+    .inputValidator((data: unknown) => data as { name: string; nights: number; dates: string[] })
     .handler(async ({ data }) => {
         const name = data.name.trim()
-        const nights = data.nights.filter((n) => n === 2 || n === 3)
-        const dates = data.dates.filter((d) => typeof d === 'string')
+        const nights = data.nights
 
-        if (!name || nights.length === 0 || dates.length === 0) {
+        if (!name || (nights !== 2 && nights !== 3) || data.dates.length === 0) {
             throw new Error('Bad Request')
         }
 
-        await prisma.tripPollResponse.create({ data: { name, nights, dates } })
+        await prisma.tripPollResponse.create({ data: { name, nights: [nights], dates: data.dates } })
     })
 
 export const Route = createFileRoute('/_rejsen/rejsen')({
@@ -38,7 +41,7 @@ export const Route = createFileRoute('/_rejsen/rejsen')({
 
 type State = {
     name: string
-    nights: number[]
+    nights: 2 | 3 | null
     dates: string[]
     submitted: boolean
     error: string | null
@@ -46,7 +49,7 @@ type State = {
 
 type Action =
     | { type: 'set_name'; value: string }
-    | { type: 'toggle_night'; value: number }
+    | { type: 'set_nights'; value: 2 | 3 }
     | { type: 'toggle_date'; value: string }
     | { type: 'submitted' }
     | { type: 'error'; message: string }
@@ -59,8 +62,8 @@ function reducer(state: State, action: Action): State {
     switch (action.type) {
         case 'set_name':
             return { ...state, name: action.value }
-        case 'toggle_night':
-            return { ...state, nights: toggle(state.nights, action.value) }
+        case 'set_nights':
+            return { ...state, nights: action.value, dates: [] }
         case 'toggle_date':
             return { ...state, dates: toggle(state.dates, action.value) }
         case 'submitted':
@@ -75,15 +78,18 @@ function RouteComponent() {
     const router = useRouter()
     const [state, dispatch] = useReducer(reducer, {
         name: '',
-        nights: [],
+        nights: null,
         dates: [],
         submitted: false,
         error: null,
     })
     const [loading, setLoading] = useState(false)
 
+    const availableDates = state.nights ? DATES[state.nights] : []
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
+        if (!state.nights) return
         setLoading(true)
         try {
             await submitResponse({ data: { name: state.name, nights: state.nights, dates: state.dates } })
@@ -127,9 +133,9 @@ function RouteComponent() {
                                     <button
                                         key={n}
                                         type="button"
-                                        onClick={() => dispatch({ type: 'toggle_night', value: n })}
+                                        onClick={() => dispatch({ type: 'set_nights', value: n })}
                                         className={`flex-1 rounded-lg border py-2 text-sm font-medium transition-colors ${
-                                            state.nights.includes(n)
+                                            state.nights === n
                                                 ? 'border-white bg-white text-black'
                                                 : 'border-neutral-700 bg-neutral-800 text-neutral-300 hover:border-neutral-500'
                                         }`}
@@ -140,31 +146,33 @@ function RouteComponent() {
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-3">
-                            <label className="text-sm font-medium text-neutral-300">Hvilke weekender passer dig?</label>
-                            <div className="flex flex-col gap-2">
-                                {DATES.map((d) => (
-                                    <button
-                                        key={d}
-                                        type="button"
-                                        onClick={() => dispatch({ type: 'toggle_date', value: d })}
-                                        className={`rounded-lg border px-4 py-2.5 text-sm font-medium text-left transition-colors ${
-                                            state.dates.includes(d)
-                                                ? 'border-white bg-white text-black'
-                                                : 'border-neutral-700 bg-neutral-800 text-neutral-300 hover:border-neutral-500'
-                                        }`}
-                                    >
-                                        {d}
-                                    </button>
-                                ))}
+                        {state.nights && (
+                            <div className="flex flex-col gap-3">
+                                <label className="text-sm font-medium text-neutral-300">Hvilke weekender passer dig?</label>
+                                <div className="flex flex-col gap-2">
+                                    {availableDates.map((d) => (
+                                        <button
+                                            key={d}
+                                            type="button"
+                                            onClick={() => dispatch({ type: 'toggle_date', value: d })}
+                                            className={`rounded-lg border px-4 py-2.5 text-sm font-medium text-left transition-colors ${
+                                                state.dates.includes(d)
+                                                    ? 'border-white bg-white text-black'
+                                                    : 'border-neutral-700 bg-neutral-800 text-neutral-300 hover:border-neutral-500'
+                                            }`}
+                                        >
+                                            {d}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {state.error && <p className="text-sm text-red-400">{state.error}</p>}
 
                         <button
                             type="submit"
-                            disabled={loading || !state.name || state.nights.length === 0 || state.dates.length === 0}
+                            disabled={loading || !state.name || !state.nights || state.dates.length === 0}
                             className="rounded-lg bg-white text-black font-medium py-2 text-sm disabled:opacity-40 transition-opacity"
                         >
                             {loading ? 'Sender...' : 'Send svar'}
@@ -179,9 +187,7 @@ function RouteComponent() {
                             {responses.map((r) => (
                                 <div key={r.id} className="rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-3">
                                     <p className="font-medium">{r.name}</p>
-                                    <p className="text-sm text-neutral-400 mt-1">
-                                        {[...r.nights].sort().join(' eller ')} nætter
-                                    </p>
+                                    <p className="text-sm text-neutral-400 mt-1">{r.nights[0]} nætter</p>
                                     <p className="text-sm text-neutral-400">{r.dates.join(', ')}</p>
                                 </div>
                             ))}
