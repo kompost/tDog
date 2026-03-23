@@ -1,0 +1,9 @@
+model TripPollResponse {
+  id        String   @id @default(cuid())
+  name      String
+  nights    Int[]
+  dates     String[]
+  createdAt DateTime @default(now())
+
+  @@map("trip_poll_response")
+}

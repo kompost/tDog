@@ -14,6 +14,7 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RejsenRejsenRouteImport } from './routes/_rejsen/rejsen'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedIdiotsRouteRouteImport } from './routes/_authenticated/idiots/route'
 import { Route as AuthenticatedIdiotsIndexRouteImport } from './routes/_authenticated/idiots/index'
@@ -47,6 +48,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RejsenRejsenRoute = RejsenRejsenRouteImport.update({
+  id: '/_rejsen/rejsen',
+  path: '/rejsen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof SignUpRoute
   '/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
   '/admin': typeof AuthenticatedAdminRoute
+  '/rejsen': typeof RejsenRejsenRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/chat/send': typeof ApiChatSendRoute
   '/api/chat/stream': typeof ApiChatStreamRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/rejsen': typeof RejsenRejsenRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/chat/send': typeof ApiChatSendRoute
   '/api/chat/stream': typeof ApiChatStreamRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/sign-up': typeof SignUpRoute
   '/_authenticated/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_rejsen/rejsen': typeof RejsenRejsenRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/chat/send': typeof ApiChatSendRoute
   '/api/chat/stream': typeof ApiChatStreamRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/idiots'
     | '/admin'
+    | '/rejsen'
     | '/api/auth/$'
     | '/api/chat/send'
     | '/api/chat/stream'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/admin'
+    | '/rejsen'
     | '/api/auth/$'
     | '/api/chat/send'
     | '/api/chat/stream'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/_authenticated/idiots'
     | '/_authenticated/admin'
+    | '/_rejsen/rejsen'
     | '/api/auth/$'
     | '/api/chat/send'
     | '/api/chat/stream'
@@ -212,6 +224,7 @@ export interface RootRouteChildren {
   SplatRoute: typeof SplatRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
+  RejsenRejsenRoute: typeof RejsenRejsenRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiChatSendRoute: typeof ApiChatSendRoute
   ApiChatStreamRoute: typeof ApiChatStreamRoute
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_rejsen/rejsen': {
+      id: '/_rejsen/rejsen'
+      path: '/rejsen'
+      fullPath: '/rejsen'
+      preLoaderRoute: typeof RejsenRejsenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -369,6 +389,7 @@ const rootRouteChildren: RootRouteChildren = {
   SplatRoute: SplatRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
+  RejsenRejsenRoute: RejsenRejsenRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiChatSendRoute: ApiChatSendRoute,
   ApiChatStreamRoute: ApiChatStreamRoute,
