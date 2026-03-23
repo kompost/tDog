@@ -9,7 +9,7 @@ export const env = createEnv({
         DATABASE_URL: z.url(),
         BETTER_AUTH_SECRET: z.string(),
         BETTER_AUTH_URL: z.url(),
-        TRUSTED_ORIGINS: z.url().optional(),
+        TRUSTED_ORIGINS: z.string().optional(),
         NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
     },
 
