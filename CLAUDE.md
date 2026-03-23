@@ -166,7 +166,7 @@ import { Header } from '@/components/Header'
 - Nginx reverse proxy with Let's Encrypt SSL
 - App runs on port 3000, proxied through Nginx
 - Domain: https://tdog.dk
-- Database: Prisma's hosted PostgreSQL (not self-hosted)
+- Database: Self-hosted PostgreSQL running as a Docker container (`db` service in docker-compose.yml)
 
 ## Troubleshooting
 

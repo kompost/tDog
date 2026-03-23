@@ -100,8 +100,11 @@ function RouteComponent() {
                         className="rounded-xl border border-neutral-800 bg-neutral-900 p-6 flex flex-col gap-6"
                     >
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-medium text-neutral-300">Navn</label>
+                            <label htmlFor="name" className="text-sm font-medium text-neutral-300">
+                                Navn
+                            </label>
                             <input
+                                id="name"
                                 type="text"
                                 value={state.name}
                                 onChange={(e) => dispatch({ type: 'set_name', value: e.target.value })}
@@ -112,10 +115,10 @@ function RouteComponent() {
                         </div>
 
                         <div className="flex flex-col gap-3">
-                            <label className="text-sm font-medium text-neutral-300">
+                            <label htmlFor="days" className="text-sm font-medium text-neutral-300">
                                 Hvilke weekender passer dig? (Torsdag - Søndag)
                             </label>
-                            <div className="flex flex-col gap-2">
+                            <div id="days" className="flex flex-col gap-2">
                                 {DATES.map((d) => (
                                     <button
                                         key={d}
