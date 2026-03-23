@@ -4,7 +4,7 @@ import { useReducer, useState } from 'react'
 import { prisma } from '@/db'
 
 const NIGHTS = [2, 3] as const
-const DATES = ['19-21. september', '26-28. september', '3-5. oktober'] as const
+const DATES = ['18-20. september', '25-27. september', '2-4. oktober'] as const
 
 const getResponses = createServerFn({ method: 'GET' }).handler(async () => {
     return prisma.tripPollResponse.findMany({ orderBy: { createdAt: 'asc' } })
