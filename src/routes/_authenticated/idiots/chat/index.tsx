@@ -16,20 +16,33 @@ function ChatPage() {
     const bottomRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const es = new EventSource('/api/chat/stream')
+        let es: EventSource
 
-        es.addEventListener('history', (e) => {
-            flushSync(() => setMessages(JSON.parse(e.data)))
-            bottomRef.current?.scrollIntoView()
-        })
+        function connect() {
+            es?.close()
+            es = new EventSource('/api/chat/stream')
 
-        es.onmessage = (e) => {
-            flushSync(() => setMessages((prev) => [...prev, JSON.parse(e.data)]))
-            bottomRef.current?.scrollIntoView()
+            es.addEventListener('history', (e) => {
+                flushSync(() => setMessages(JSON.parse(e.data)))
+                bottomRef.current?.scrollIntoView()
+            })
+
+            es.onmessage = (e) => {
+                flushSync(() => setMessages((prev) => [...prev, JSON.parse(e.data)]))
+                bottomRef.current?.scrollIntoView()
+            }
         }
+
+        function onVisibilityChange() {
+            if (document.visibilityState === 'visible') connect()
+        }
+
+        connect()
+        document.addEventListener('visibilitychange', onVisibilityChange)
 
         return () => {
             es.close()
+            document.removeEventListener('visibilitychange', onVisibilityChange)
         }
     }, [])
 

@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
-import { CalendarDays, MessageCircle, BarChart2 } from 'lucide-react'
+import { BarChart2, CalendarDays, MessageCircle } from 'lucide-react'
 
 export const Route = createFileRoute('/_authenticated/idiots')({
     component: IdiotsLayout,
@@ -14,7 +14,10 @@ const navItems = [
 function IdiotsLayout() {
     return (
         <div style={{ display: 'grid', gridTemplateRows: '1fr 80px', position: 'fixed', inset: 0 }}>
-            <main className="pt-[16px] px-[16px]" style={{ overflowY: 'auto', minHeight: 0, overscrollBehavior: 'none' }}>
+            <main
+                className="max-w-4xl pt-[16px] px-[16px] mx-auto w-full"
+                style={{ overflowY: 'auto', minHeight: 0, overscrollBehavior: 'none' }}
+            >
                 <Outlet />
             </main>
 

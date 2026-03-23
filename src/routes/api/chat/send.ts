@@ -1,18 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getSession } from '@/lib/auth-server'
 import { prisma } from '@/db'
+import { getSession } from '@/lib/auth-server'
 import { broadcast } from '@/server/chat'
 
 export const Route = createFileRoute('/api/chat/send')({
     server: {
         handlers: {
-            POST: async ({ request }: { request: Request }) => {
+            POST: async ({ request }) => {
                 const session = await getSession(request)
                 if (!session) return new Response('Unauthorized', { status: 401 })
 
-                const body = await request.json()
-                const text =
-                    typeof body?.text === 'string' ? body.text.trim() : ''
+                const body = (await request.json().catch((_) => null)) as { text?: string } | null
+                const text = typeof body?.text === 'string' ? body.text.trim() : ''
                 if (!text) return new Response('Bad Request', { status: 400 })
 
                 const msg = await prisma.message.create({

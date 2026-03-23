@@ -23,3 +23,11 @@ export async function requireAuth(request: Request) {
 
     return session
 }
+
+export function withAuth(handler: (request: Request, session: TypedSession) => Promise<Response>) {
+    return async ({ request }: { request: Request }) => {
+        const session = await getSession(request)
+        if (!session) return new Response('Unauthorized', { status: 401 })
+        return handler(request, session)
+    }
+}

@@ -1,22 +1,29 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { useEffect, useState } from 'react'
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { prisma } from '@/db'
+import { EventVisibility, ParticipationStatus, Role } from '@/generated/prisma/enums'
 import { requireAuth } from '@/lib/auth-server'
 
 const listMyEvents = createServerFn({ method: 'GET' }).handler(async ({ request }) => {
     const { user } = await requireAuth(request)
-    const canManageEvents = user.role === 'ADMIN' || user.role === 'COLLABORATOR'
+    const canManageEvents = user.role === Role.ADMIN || user.role === Role.COLLABORATOR
 
-    const cutoff = new Date(Date.now() - 15 * 60 * 1000)
+    const FIFTEEN_MINUTES = 15 * 60 * 1000
+    const cutoff = new Date(Date.now() - FIFTEEN_MINUTES)
 
     const events = await prisma.event.findMany({
         where: {
             date: { gte: cutoff },
-            OR: [{ visibility: 'ALL' }, { creatorId: user.id }, { invitees: { some: { userId: user.id } } }],
+            OR: [
+                { visibility: EventVisibility.ALL },
+                { creatorId: user.id },
+                { invitees: { some: { userId: user.id } } },
+            ],
         },
         include: {
             creator: {
@@ -34,8 +41,13 @@ const listMyEvents = createServerFn({ method: 'GET' }).handler(async ({ request 
     return { events, canManageEvents, userId: user.id }
 })
 
+const participationSchema = z.object({
+    eventId: z.string(),
+    status: z.enum(ParticipationStatus),
+})
+
 const setParticipation = createServerFn({ method: 'POST' })
-    .inputValidator((data: unknown) => data as { eventId: string; status: 'GOING' | 'FOTT' })
+    .inputValidator((data: unknown) => participationSchema.parse(data))
     .handler(async ({ request, data }) => {
         const { user } = await requireAuth(request)
         await prisma.eventParticipant.upsert({
@@ -121,7 +133,7 @@ function EventsPage() {
                     <div className="space-y-4">
                         {events.map((event) => {
                             const isParticipating = event.participants.some(
-                                (p) => p.user?.id === userId && p.status === 'GOING',
+                                (p) => p.user?.id === userId && p.status === ParticipationStatus.GOING,
                             )
 
                             return (
@@ -165,12 +177,17 @@ function EventsPage() {
                                                         setParticipantsModal({
                                                             name: event.name,
                                                             list: event.participants
-                                                                .filter((p) => p.status === 'GOING')
+                                                                .filter((p) => p.status === ParticipationStatus.GOING)
                                                                 .map((p) => p.user),
                                                         })
                                                     }
                                                 >
-                                                    Participants: {event.participants.filter((p) => p.status === 'GOING').length}
+                                                    Participants:{' '}
+                                                    {
+                                                        event.participants.filter(
+                                                            (p) => p.status === ParticipationStatus.GOING,
+                                                        ).length
+                                                    }
                                                 </button>
                                             </div>
                                             <div className="flex gap-2">
@@ -184,7 +201,12 @@ function EventsPage() {
                                                     }
                                                     onClick={async () => {
                                                         if (!isParticipating) {
-                                                            await setParticipation({ data: { eventId: event.id, status: 'GOING' } })
+                                                            await setParticipation({
+                                                                data: {
+                                                                    eventId: event.id,
+                                                                    status: ParticipationStatus.GOING,
+                                                                },
+                                                            })
                                                             router.invalidate()
                                                         }
                                                     }}
@@ -199,7 +221,12 @@ function EventsPage() {
                                                     }
                                                     onClick={async () => {
                                                         if (isParticipating) {
-                                                            await setParticipation({ data: { eventId: event.id, status: 'FOTT' } })
+                                                            await setParticipation({
+                                                                data: {
+                                                                    eventId: event.id,
+                                                                    status: ParticipationStatus.FOTT,
+                                                                },
+                                                            })
                                                             router.invalidate()
                                                         }
                                                     }}

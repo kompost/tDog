@@ -3,7 +3,14 @@ import { z } from 'zod'
 
 export const env = createEnv({
     server: {
-        SERVER_URL: z.url().optional(),
+        POSTGRES_USER: z.string(),
+        POSTGRES_PASSWORD: z.string(),
+        POSTGRES_DB: z.string(),
+        DATABASE_URL: z.url(),
+        BETTER_AUTH_SECRET: z.string(),
+        BETTER_AUTH_URL: z.url(),
+        TRUSTED_ORIGINS: z.url().optional(),
+        NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
     },
 
     /**
@@ -20,7 +27,7 @@ export const env = createEnv({
      * What object holds the environment variables at runtime. This is usually
      * `process.env` or `import.meta.env`.
      */
-    runtimeEnv: import.meta.env,
+    runtimeEnv: process.env,
 
     /**
      * By default, this library will feed the environment variables directly to

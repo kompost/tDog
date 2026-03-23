@@ -1,10 +1,11 @@
 import { APIError, betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { prisma } from '@/db'
+import { env } from '@/env'
 import { Role } from '@/generated/prisma/enums'
 
 export const auth = betterAuth({
-    trustedOrigins: process.env.TRUSTED_ORIGINS?.split(',') ?? [],
+    trustedOrigins: env.TRUSTED_ORIGINS?.split(',') ?? [],
     user: {
         additionalFields: {
             role: {

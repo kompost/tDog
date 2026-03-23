@@ -1,23 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getSession } from '@/lib/auth-server'
-import { addClient, removeClient, getHistory } from '@/server/chat'
+import { withAuth } from '@/lib/auth-server'
+import { addClient, getHistory, removeClient } from '@/server/chat'
 
 export const Route = createFileRoute('/api/chat/stream')({
     server: {
         handlers: {
-            GET: async ({ request }: { request: Request }) => {
-                const session = await getSession(request)
-                if (!session) return new Response('Unauthorized', { status: 401 })
-
+            GET: withAuth(async (request) => {
                 const encoder = new TextEncoder()
                 const stream = new ReadableStream({
                     async start(controller) {
                         const history = await getHistory()
-                        controller.enqueue(
-                            encoder.encode(
-                                `event: history\ndata: ${JSON.stringify(history)}\n\n`,
-                            ),
-                        )
+                        controller.enqueue(encoder.encode(`event: history\ndata: ${JSON.stringify(history)}\n\n`))
 
                         addClient(controller)
 
@@ -43,7 +36,7 @@ export const Route = createFileRoute('/api/chat/stream')({
                         Connection: 'keep-alive',
                     },
                 })
-            },
+            }),
         },
     },
 })
