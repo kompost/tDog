@@ -2,7 +2,6 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { useEffect } from 'react'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 // Import CSS directly, not as URL - let Vite handle it
 import '../styles.css'
@@ -19,33 +18,13 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
             },
             {
                 name: 'viewport',
-                content: 'width=device-width, initial-scale=1, viewport-fit=cover',
+                content: 'width=device-width, initial-scale=1',
             },
             {
                 title: 'tDogs Kennel',
             },
-            {
-                name: 'theme-color',
-                content: '#000000',
-            },
-            {
-                name: 'apple-mobile-web-app-capable',
-                content: 'yes',
-            },
-            {
-                name: 'apple-mobile-web-app-status-bar-style',
-                content: 'black-translucent',
-            },
-            {
-                name: 'apple-mobile-web-app-title',
-                content: 'tDogs',
-            },
         ],
-        links: [
-            { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
-            { rel: 'manifest', href: '/manifest.json' },
-            { rel: 'apple-touch-icon', href: '/logo192.png' },
-        ],
+        links: [{ rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
         // CSS is injected automatically by Vite when imported directly
     }),
     shellComponent: RootComponent,
@@ -53,12 +32,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 })
 
 function RootComponent() {
-    useEffect(() => {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-        }
-    }, [])
-
     return (
         <RootDocument>
             <Outlet />
