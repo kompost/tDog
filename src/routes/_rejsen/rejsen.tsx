@@ -25,6 +25,13 @@ const submitResponse = createServerFn({ method: 'POST' })
     })
 
 export const Route = createFileRoute('/_rejsen/rejsen')({
+    head: () => ({
+        meta: [
+            { title: 'Rejsen Survey' },
+            { property: 'og:title', content: 'Rejsen Survey' },
+            { property: 'og:description', content: 'Stem på hvornår du kan' },
+        ],
+    }),
     loader: () => getResponses(),
     component: RouteComponent,
 })
