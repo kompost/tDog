@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { z } from 'zod'
+import { Countdown } from '@/components/countdown'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -64,12 +65,9 @@ export const Route = createFileRoute('/_authenticated/idiots/events/')({
 
 type Participant = { id: string; name: string; email: string } | null
 
-const CPH_LOCALE = 'da-DK'
-const CPH_TZ = 'Europe/Copenhagen'
-
 function formatEventDate(date: Date | string) {
-    return new Date(date).toLocaleString(CPH_LOCALE, {
-        timeZone: CPH_TZ,
+    return new Date(date).toLocaleString('da-DK', {
+        timeZone: 'Europe/Copenhagen',
         weekday: 'short',
         day: 'numeric',
         month: 'short',
@@ -77,34 +75,6 @@ function formatEventDate(date: Date | string) {
         hour: '2-digit',
         minute: '2-digit',
     })
-}
-
-function Countdown({ date }: { date: Date | string }) {
-    const target = new Date(date).getTime()
-    const [diff, setDiff] = useState<number | null>(null)
-
-    useEffect(() => {
-        setDiff(target - Date.now())
-        const id = setInterval(() => setDiff(target - Date.now()), 1000)
-        return () => clearInterval(id)
-    }, [target])
-
-    if (diff === null) return null
-    if (diff <= 0) return <span className="text-green-600 font-medium">Happening now</span>
-
-    const totalSeconds = Math.floor(diff / 1000)
-    const days = Math.floor(totalSeconds / 86400)
-    const hours = Math.floor((totalSeconds % 86400) / 3600)
-    const minutes = Math.floor((totalSeconds % 3600) / 60)
-    const seconds = totalSeconds % 60
-
-    const parts = []
-    if (days > 0) parts.push(`${days}d`)
-    if (hours > 0 || days > 0) parts.push(`${hours}h`)
-    parts.push(`${String(minutes).padStart(2, '0')}m`)
-    parts.push(`${String(seconds).padStart(2, '0')}s`)
-
-    return <span>{parts.join(' ')}</span>
 }
 
 function EventsPage() {
@@ -141,8 +111,8 @@ function EventsPage() {
                                     <CardHeader>
                                         <div className="flex justify-between items-start">
                                             <div className="space-y-1">
-                                                <CardTitle>{event.name}</CardTitle>
-                                                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                                                <CardTitle className="text-2xl">{event.name}</CardTitle>
+                                                <div className="flex items-center gap-1.5 text-sm text-blue-500 font-medium">
                                                     <span>📅</span>
                                                     <span>{formatEventDate(event.date)}</span>
                                                 </div>
@@ -164,9 +134,9 @@ function EventsPage() {
                                     </CardHeader>
                                     <CardContent>
                                         <p className="text-gray-700 mb-2">{event.description}</p>
-                                        <p className="text-sm text-gray-400 mb-4">
+                                        <div className="text-sm text-gray-400 mb-4">
                                             Starts in: <Countdown date={event.date} />
-                                        </p>
+                                        </div>
                                         <div className="flex justify-between items-center">
                                             <div className="text-sm text-gray-500">
                                                 <p>Created by: {event.creator?.name ?? 'Deleted User'}</p>

@@ -13,7 +13,15 @@ const navItems = [
 
 function IdiotsLayout() {
     return (
-        <div style={{ display: 'grid', gridTemplateRows: '1fr 80px', position: 'fixed', inset: 0 }}>
+        <div
+            style={{
+                display: 'grid',
+                gridTemplateRows: '1fr 80px',
+                position: 'fixed',
+                inset: 0,
+                backgroundColor: '#595758',
+            }}
+        >
             <main
                 className="max-w-4xl pt-[16px] px-[16px] mx-auto w-full"
                 style={{ overflowY: 'auto', minHeight: 0, overscrollBehavior: 'none' }}
