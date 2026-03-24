@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-tDog is a full-stack TypeScript application built with TanStack Start (SSR React framework), using Nitro for the server runtime, Prisma for database access, and oRPC for type-safe API endpoints. The application is deployed via Docker to a Hetzner server with automated CI/CD through GitHub Actions.
+tDog is a full-stack TypeScript application built with TanStack Start (SSR React framework), using Nitro for the server runtime, Prisma for database access, and server functions for type-safe calls. The application is deployed via Docker to a Hetzner server with automated CI/CD through GitHub Actions.
 
 ## Tech Stack Architecture
 
@@ -17,9 +17,8 @@ tDog is a full-stack TypeScript application built with TanStack Start (SSR React
 
 ### Backend & API Layer
 - **Nitro** server runtime (configured via `nitro/vite` plugin)
-- **oRPC** for type-safe RPC-style APIs (router defined in `src/orpc/router/`)
+- **BetterAuth** for authentication
 - API routes are handled via TanStack Start's server handlers
-- RPC endpoint: `/api/rpc/*` (handled by `src/routes/api.rpc.$.ts`)
 
 ### Database
 - **Prisma** with PostgreSQL (using Prisma's online hosted database)
@@ -139,9 +138,6 @@ GitHub Secrets required:
 - `HETZNER_SSH_KEY` - Private SSH key
 
 ## Important Notes
-
-### Demo Files
-Files prefixed with `demo` in `src/routes/demo/` are examples and can be safely deleted.
 
 ### Prisma Schema Location
 `prisma/schema.prisma` with custom output path:
