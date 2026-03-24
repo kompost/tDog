@@ -3,7 +3,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { useReducer, useState } from 'react'
 import { prisma } from '@/db'
 
-const DATES = ['17-20. september', '24-27. september', '1-4. oktober']
+const DATES = ['17-20. september', '24-27. september', '1-4. oktober', 'Ingen af ovenstående']
 
 const getResponses = createServerFn({ method: 'GET' }).handler(async () => {
     return prisma.tripPollResponse.findMany({ orderBy: { createdAt: 'asc' } })
