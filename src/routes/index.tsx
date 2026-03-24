@@ -28,7 +28,7 @@ export const Route = createFileRoute('/')({
     component: Page,
 })
 
-export function Page() {
+function Page() {
     const [joke, setJoke] = useState(getRandomJoke())
 
     return (
