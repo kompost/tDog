@@ -120,6 +120,7 @@ const updateEvent = createServerFn({ method: 'POST' })
     })
 
 export const Route = createFileRoute('/_authenticated/idiots/events/edit/$eventId')({
+    staticData: { title: 'Edit Event' },
     loader: () => checkCanManageEvents(),
     component: EditEventPage,
 })

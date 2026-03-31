@@ -59,6 +59,7 @@ const setParticipation = createServerFn({ method: 'POST' })
     })
 
 export const Route = createFileRoute('/_authenticated/idiots/events/')({
+    staticData: { title: 'Events', headerAction: 'events', navAction: 'events' },
     loader: () => listMyEvents(),
     component: EventsPage,
 })
@@ -81,18 +82,9 @@ function EventsPage() {
     const { events, canManageEvents, userId } = Route.useLoaderData()
     const router = useRouter()
     const [participantsModal, setParticipantsModal] = useState<{ name: string; list: Participant[] } | null>(null)
-
     return (
         <>
             <div className="max-w-4xl mx-auto">
-                {canManageEvents && (
-                    <div className="flex justify-between items-center mb-6">
-                        <Link to="/idiots/events/edit/$eventId" params={{ eventId: 'new' }}>
-                            <Button>Create Event</Button>
-                        </Link>
-                    </div>
-                )}
-
                 {events.length === 0 ? (
                     <Card>
                         <CardContent className="pt-6">

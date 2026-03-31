@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/idiots/profile/')({
+    staticData: { title: 'Stats', headerAction: 'stats', navAction: 'stats' },
     component: StatsPage,
 })
 

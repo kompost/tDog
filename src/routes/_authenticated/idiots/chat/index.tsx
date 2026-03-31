@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 
 export const Route = createFileRoute('/_authenticated/idiots/chat/')({
+    staticData: { title: 'Chat', headerAction: 'chat', navAction: 'chat' },
     component: ChatPage,
 })
 
@@ -12,7 +13,6 @@ function ChatPage() {
     const { session } = useRouteContext({ from: '/_authenticated' })
     const { id: userId } = session.user
     const [messages, setMessages] = useState<Message[]>([])
-    const [input, setInput] = useState('')
     const bottomRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -46,17 +46,6 @@ function ChatPage() {
         }
     }, [])
 
-    async function send() {
-        if (!input.trim()) return
-        const text = input.trim()
-        setInput('')
-        await fetch('/api/chat/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text }),
-        })
-    }
-
     return (
         <div style={{ display: 'grid', gridTemplateRows: '1fr auto', height: '100%' }}>
             <div style={{ overflowY: 'auto', padding: '16px' }}>
@@ -84,30 +73,6 @@ function ChatPage() {
                     ))}
                     <div ref={bottomRef} />
                 </div>
-            </div>
-
-            <div
-                className="rounded-2xl bg-background/80 backdrop-blur-md border shadow-lg flex gap-2"
-                style={{ margin: '0 0 8px', padding: '10px 12px' }}
-            >
-                <input
-                    className="flex-1 border bg-background px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-                    style={{ borderRadius: '10px' }}
-                    placeholder="Message..."
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') send()
-                    }}
-                />
-                <button
-                    type="button"
-                    onClick={send}
-                    className="bg-primary text-primary-foreground px-4 py-2 text-sm font-medium"
-                    style={{ borderRadius: '10px' }}
-                >
-                    Send
-                </button>
             </div>
         </div>
     )

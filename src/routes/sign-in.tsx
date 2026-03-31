@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useId, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -12,14 +12,14 @@ export const Route = createFileRoute('/sign-in')({
 
 function SignInPage() {
     const navigate = useNavigate()
-    const emailId = useId()
-    const passwordId = useId()
+    const emailId = 'sign-in-email'
+    const passwordId = 'sign-in-password'
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
 
-    const handleSignIn = async (e: React.FormEvent) => {
+    const handleSignIn = async (e: React.SubmitEvent) => {
         e.preventDefault()
         setError(null)
         setLoading(true)
@@ -38,7 +38,6 @@ function SignInPage() {
             }
         } catch (err) {
             setError('An unexpected error occurred')
-            console.error('Sign in error:', err)
         } finally {
             setLoading(false)
         }
