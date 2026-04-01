@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 
 export const Route = createFileRoute('/_authenticated/idiots/chat/')({
-    staticData: { title: 'Chat', headerAction: 'chat', navAction: 'chat' },
+    staticData: { title: 'Chat', headerAction: 'chat', footerAction: 'chat' },
     component: ChatPage,
 })
 
@@ -47,33 +47,29 @@ function ChatPage() {
     }, [])
 
     return (
-        <div style={{ display: 'grid', gridTemplateRows: '1fr auto', height: '100%' }}>
-            <div style={{ overflowY: 'auto', padding: '16px' }}>
-                <div className="flex flex-col justify-end min-h-full space-y-2">
-                    {messages.map((msg) => (
+        <div className="flex flex-col space-y-2">
+            {messages.map((msg) => (
+                <div
+                    key={msg.id}
+                    className={`flex flex-col ${msg.userId === userId ? 'items-end' : 'items-start'}`}
+                >
+                    <div className={`relative max-w-[75%] ${msg.userId !== userId ? 'mt-3' : ''}`}>
+                        {msg.userId !== userId && (
+                            <span className="absolute -top-3 left-2 text-[10px] font-medium bg-muted-foreground/20 text-foreground px-1.5 py-0.5 rounded-md leading-none">
+                                {msg.name}
+                            </span>
+                        )}
                         <div
-                            key={msg.id}
-                            className={`flex flex-col ${msg.userId === userId ? 'items-end' : 'items-start'}`}
+                            className={`px-3 py-2 rounded-2xl break-words text-sm ${
+                                msg.userId === userId ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                            }`}
                         >
-                            <div className={`relative max-w-[75%] ${msg.userId !== userId ? 'mt-3' : ''}`}>
-                                {msg.userId !== userId && (
-                                    <span className="absolute -top-3 left-2 text-[10px] font-medium bg-muted-foreground/20 text-foreground px-1.5 py-0.5 rounded-md leading-none">
-                                        {msg.name}
-                                    </span>
-                                )}
-                                <div
-                                    className={`px-3 py-2 rounded-2xl break-words text-sm ${
-                                        msg.userId === userId ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                                    }`}
-                                >
-                                    {msg.text}
-                                </div>
-                            </div>
+                            {msg.text}
                         </div>
-                    ))}
-                    <div ref={bottomRef} />
+                    </div>
                 </div>
-            </div>
+            ))}
+            <div ref={bottomRef} />
         </div>
     )
 }

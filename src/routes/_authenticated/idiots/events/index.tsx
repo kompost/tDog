@@ -59,7 +59,7 @@ const setParticipation = createServerFn({ method: 'POST' })
     })
 
 export const Route = createFileRoute('/_authenticated/idiots/events/')({
-    staticData: { title: 'Events', headerAction: 'events', navAction: 'events' },
+    staticData: { title: 'Events', headerAction: 'events', footerAction: 'events' },
     loader: () => listMyEvents(),
     component: EventsPage,
 })
