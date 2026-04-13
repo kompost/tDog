@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as OhmRouteImport } from './routes/ohm'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -34,6 +35,11 @@ const SignUpRoute = SignUpRouteImport.update({
 const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OhmRoute = OhmRouteImport.update({
+  id: '/ohm',
+  path: '/ohm',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SplatRoute = SplatRouteImport.update({
@@ -115,6 +121,7 @@ const AuthenticatedIdiotsEventsEditEventIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/ohm': typeof OhmRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
@@ -132,6 +139,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/ohm': typeof OhmRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -150,6 +158,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/$': typeof SplatRoute
+  '/ohm': typeof OhmRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/_authenticated/idiots': typeof AuthenticatedIdiotsRouteRouteWithChildren
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$'
+    | '/ohm'
     | '/sign-in'
     | '/sign-up'
     | '/idiots'
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$'
+    | '/ohm'
     | '/sign-in'
     | '/sign-up'
     | '/admin'
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/$'
+    | '/ohm'
     | '/sign-in'
     | '/sign-up'
     | '/_authenticated/idiots'
@@ -222,6 +234,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   SplatRoute: typeof SplatRoute
+  OhmRoute: typeof OhmRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
   RejsenRejsenRoute: typeof RejsenRejsenRoute
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ohm': {
+      id: '/ohm'
+      path: '/ohm'
+      fullPath: '/ohm'
+      preLoaderRoute: typeof OhmRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$': {
@@ -387,6 +407,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   SplatRoute: SplatRoute,
+  OhmRoute: OhmRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
   RejsenRejsenRoute: RejsenRejsenRoute,
